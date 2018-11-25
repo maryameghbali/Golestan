@@ -1,3 +1,8 @@
 *.iws
 workspace.xml
 tasks.xml
+encodings.xml
+vcs.xml
+.idea/dataSources
+dataSources.xml
+dataSources.local.xml
