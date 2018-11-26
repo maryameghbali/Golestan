@@ -8,10 +8,12 @@
 ?>
 
 
-Footer
+<footer class="footer fixed-bottom>
+    <div class="col-sm-12 ">
+        Copyright 2018
+    </div>
+</footer>
 
 
-<script src="./assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="./assets/jquery/jquery-3.3.1.min.js"></script>
 </body>
 </html>
