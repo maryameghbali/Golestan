@@ -1,59 +1,54 @@
 <?php
 include "../dbConfig.php";
-include '../header.php';
+include '../common/header.php';
 
+if(isset($_POST) & !empty($_POST)) {
 
+    if (isset($_POST['Add'])) {
 
-if ($link->connect_error) {
-    die("Connection failed: " . $link->connect_error);
+        if ($link->connect_error) {
+            die("Connection failed: " . $link->connect_error);
+        }
+
+        $sql = "insert into shop_items (title,description,stock,price) values ('".$_POST['Name']."','".$_POST['Description']."',".$_POST['Stock'].",".$_POST['Price'].")";
+
+        if ($link->query($sql) === TRUE) {
+           echo "New record created successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . $link->error;
+        }
+
+        $link->close();
+    }
 }
 
-$sql = "insert into shop_items (title,description,stock,price) values ('test1','testdesc',5,4500)";
 
-if ($link->query($sql) === TRUE) {
-    echo "New record created successfully";
-} else {
-    echo "Error: " . $sql . "<br>" . $link->error;
-}
-
-$link->close();
 ?>
 <div class="container">
-    <form>
+    <form method="post">
 
         <div class="form-group">
-            <label for="exampleFormControlInput1">Email address</label>
-            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+            <label for="exampleFormControlInput1">Name</label>
+            <input class="form-control" type="text" placeholder="Name"  name="Name">
         </div>
         <div class="form-group">
-            <label for="exampleFormControlSelect1">Example select</label>
-            <select class="form-control" id="exampleFormControlSelect1">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </select>
+            <label for="exampleFormControlTextarea1">Description</label>
+            <textarea class="form-control" name="Description" rows="3"></textarea>
         </div>
         <div class="form-group">
-            <label for="exampleFormControlSelect2">Example multiple select</label>
-            <select multiple class="form-control" id="exampleFormControlSelect2">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </select>
+            <label for="exampleFormControlInput1">Stock</label>
+            <input class="form-control" type="text" placeholder="Stock" name="Stock">
         </div>
         <div class="form-group">
-            <label for="exampleFormControlTextarea1">Example textarea</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <label for="exampleFormControlInput1">Price</label>
+            <input class="form-control" type="text" placeholder="Price" name="Price">
         </div>
+        <button type="submit" class="btn btn-primary"  name="Add" id="Add">Submit</button>
     </form>
 
 
 </div>
 
 <?php
-include '../footer.php';
+include '../common/footer.php';
 ?>
