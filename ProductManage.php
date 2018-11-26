@@ -1,16 +1,13 @@
 <?php
-include "../dbConfig.php";
-include '../common/header.php';
+include "header.php";
+include "DBConfig.php";
 
 if(isset($_POST) & !empty($_POST)) {
 
     if (isset($_POST['Add'])) {
 
-        if ($link->connect_error) {
-            die("Connection failed: " . $link->connect_error);
-        }
-
-        $sql = "insert into shop_items (title,description,stock,price) values ('".$_POST['Name']."','".$_POST['Description']."',".$_POST['Stock'].",".$_POST['Price'].")";
+        $sql = "insert into shop_items (title,description,stock,price) 
+            values ('".$_POST['Name']."','".$_POST['Description']."',".$_POST['Stock'].",".$_POST['Price'].")";
 
         if ($link->query($sql) === TRUE) {
            echo "New record created successfully";
@@ -50,5 +47,5 @@ if(isset($_POST) & !empty($_POST)) {
 </div>
 
 <?php
-include '../common/footer.php';
+include "footer.php";
 ?>
