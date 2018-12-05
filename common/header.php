@@ -1,8 +1,4 @@
-<?php
 
-include ("general.php");
-include ("../DBConfig.php")
-?>
 
 <head>
     <title>Colo Shop</title>

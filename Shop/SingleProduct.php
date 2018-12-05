@@ -1,5 +1,8 @@
 <?php
+
 include  "../common/header.php";
+include  "../common/General.php";
+include "../DBConfig.php";
 
 $ShowId=$_GET['Id'];
 $sql = "select *  from shop_items where id='$ShowId'";

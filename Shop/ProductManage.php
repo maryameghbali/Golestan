@@ -2,6 +2,9 @@
 
 
 include  "../common/header.php";
+include  "../common/General.php";
+include "../DBConfig.php";
+
 $mes ="";
 if(isset($_POST) & !empty($_POST)) {
 
