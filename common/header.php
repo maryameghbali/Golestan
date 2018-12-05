@@ -54,7 +54,7 @@
                                     <i class="fa fa-angle-down"></i>
                                 </a>
                                 <ul class="account_selection">
-                                    <li><a href="/Golestan/Authentication/login.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                                    <li><a href="/Golestan/Authentication/Login.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
                                     <li><a href="/Golestan/Authentication/Registration.php"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
                                 </ul>
                             </li>
@@ -76,7 +76,7 @@
                     </div>
                     <nav class="navbar">
                         <ul class="navbar_menu">
-                            <li><a href="/Golestan/index.php">home</a></li>
+                            <li><a href="/Golestan/Index.php">home</a></li>
                             <li><a href="#">shop</a></li>
                             <li><a href="/Golestan/Shop/ProductManage.php">Products</a></li>
                             <li><a href="#">pages</a></li>
