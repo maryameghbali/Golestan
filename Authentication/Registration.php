@@ -1,43 +1,15 @@
 <?php
 include '../common/header.php';
 include "../DBConfig.php";
+include "UserController.php";
 
 if(isset($_POST) & !empty($_POST)) {
 
     if (isset($_POST['register'])) 
     {
-        $password = password_hash($_POST['inputPassword'], PASSWORD_DEFAULT);
-        try {   
-            // Prepare an SQL statement for execution
-            $statement = $link->prepare('INSERT INTO shop_user (
-                    name,
-                    address,
-                    phone,
-                    email,
-                    password
-                ) VALUES (
-                    ?,
-                    ?,
-                    ?,
-                    ?,
-                    ?
-                );
-            ');
-            // Bind variables to a prepared statement as parameters
-            $statement->bind_param('sssss', $_POST['inputName'], $_POST['inputAddress'], $_POST['inputPhone'], $_POST['inputEmail'], $password);
-            
-            // Execute a prepared Query
-            $statement->execute();
-
-            // Close a prepared statement
-            $statement->close();
-
-            $link->close();
-        } catch (mysqli_sql_exception $e) {
-            // Output error and exit upon exception
-            echo $e->getMessage();
-            exit;
-        }
+        $controller = new UserController();
+        $controller->addNewUser($_POST['inputName'], $_POST['inputAddress'],
+            $_POST['inputPhone'], $_POST['inputEmail'], $_POST['inputPassword']);
     }
 }
 ?>

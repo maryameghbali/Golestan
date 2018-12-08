@@ -1,38 +1,14 @@
 <?php
 include '../common/header.php';
 include "../DBConfig.php";
+include "UserController.php";
 $mes ="";
 if(isset($_POST) & !empty($_POST)) {
 
     if (isset($_POST['login'])) 
     {
-        try {
-            $statement = $link->prepare('SELECT * FROM shop_user WHERE email LIKE ?');
-            $statement->bind_param('s',$_POST['inputEmail']);
-            $statement->execute();
-            $result = $statement->get_result();
-
-            while ($user = $result->fetch_object()) {
-                // Output User info
-                $password=$user->password;
-                if(password_verify($_POST['inputPassword'], $password)){
-                    $mes =  'Welcome';
-                }
-                else
-                {
-                    $mes = "Email or password is wrong";
-
-                }
-            }
-        }
-        catch(mysqli_sql_exception $e){
-            echo $e->getMessage(), PHP_EOL;
-            exit();
-        } 
-        finally
-        {
-            $link->close();
-        }
+        $controller = new UserController();
+        $mes = $controller->loginUser($_POST['inputEmail'],$_POST['inputPassword']);
     }
 }
 ?>
