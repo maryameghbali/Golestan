@@ -2,7 +2,12 @@
 
 <?php
 include './common/header.php';
-include ("DBConfig.php")
+include ("DBConfig.php");
+include ('./Shop/ProductController.php');
+
+$controller = new ProductController();
+
+
 ?>
 <!-- Slider -->
 
@@ -40,11 +45,7 @@ include ("DBConfig.php")
                 <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
 
                 <?php
-                $sql = "select *  from shop_items";
-
-                if ($result=mysqli_query($link,$sql)) {
-
-                }
+                $result = $controller->getAllProduction();
                 while ($row=mysqli_fetch_array($result))
                 { ?>
                     <div class="product-item men">
@@ -56,7 +57,7 @@ include ("DBConfig.php")
                             <div class="favorite favorite_left"></div>
                             <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
                             <div class="product_info">
-                                <h6 class="product_name"><a href="./shop/SingleProduct.php?Id=<?php echo $row['id'] ?>"><?php echo $row['title']; ?></a></h6>
+                                <h6 class="product_name"><a href="./Shop/SingleProduct.php?Id=<?php echo $row['id'] ?>"><?php echo $row['title']; ?></a></h6>
                                 <div class="product_price">EUR <?php echo $row['price']; ?></div>
                             </div>
                         </div>

@@ -1,10 +1,11 @@
 <?php
 include '../common/header.php';
+include "../DBConfig.php";
 include("BasketController.php");
 $controller = new BasketController();
 
 ?>
-    <div class="container fill_height" style="padding-top: 100px">
+    <div class="container fill_height">
         <div class="row align-items-center fill_height">
             <table class="table">
                 <thead class="thead-light">

@@ -1,5 +1,4 @@
 <?php
-include ("../DBConfig.php");
 class BasketController
 {
 

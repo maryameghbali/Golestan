@@ -1,39 +1,18 @@
 <?php
-
-
 include  "../common/header.php";
 include  "../common/General.php";
 include "../DBConfig.php";
-
+include "ProductController.php";
 $mes ="";
 if(isset($_POST) & !empty($_POST)) {
 
     if (isset($_POST['Add'])) {
+        $controller = new ProductController();
+        $mes = $controller->addNewProduct($_POST['Name'],$_POST['Description'],$_POST['Stock'],$_POST['Price']);
 
-        if ($link->connect_error) {
-            die("Connection failed: " . $link->connect_error);
-        }
-
-        $sql = "insert into shop_items (title,description,stock,price) values ('".$_POST['Name']."','".$_POST['Description']."',".$_POST['Stock'].",".$_POST['Price'].")";
-
-        if ($link->query($sql) === TRUE) {
-
-            $fn=$_FILES['image']['tmp_name'];
-            $MaxId = GetMaxId($link,"shop_items");
-            $path = "../assets/images/ProductImages/shop_items".$MaxId.".jpg";
-            move_uploaded_file($fn,$path);
-            $mes = "New record created successfully";
-        } else {
-            echo "Error: " . $sql . "<br>" . $link->error;
-        }
-
-        $link->close();
     }
 }
-
-
 ?>
-
         <div class="container fill_height" style="padding-top: 100px">
             <div class="row align-items-center fill_height">
                 <div class="col-md-6">

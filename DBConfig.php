@@ -10,7 +10,11 @@ class DBConfig {
     }
 
     static function getLink() {
-        return mysqli_connect("localhost:3306","root","","shop");
+        $link = mysqli_connect("localhost:3306","root","","shop");
+        if ($link->connect_error) {
+            die("Connection failed: " . $link->connect_error);
+        }
+        return  $link;
     }
 
 }
