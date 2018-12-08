@@ -1,5 +1,5 @@
 <?php
-$link = mysqli_connect("localhost:3306","pmauser","Mrt136594$","shop");
+$link = mysqli_connect("localhost:3306","root","","shop");
 
 class DBConfig {
 
@@ -10,7 +10,7 @@ class DBConfig {
     }
 
     static function getLink() {
-        return mysqli_connect("localhost:3306","pmauser","Mrt136594$","shop");
+        return mysqli_connect("localhost:3306","root","","shop");
     }
 
 }
