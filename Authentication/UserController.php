@@ -79,4 +79,24 @@ class UserController
         }
     }
 
+    function getUserAddressByEmail($email) {
+        try {
+            $link = DBConfig::getLink();
+            $statement = $link->prepare('SELECT address FROM shop_user WHERE email LIKE ?');
+            $statement->bind_param('s',$email);
+            $statement->execute();
+            $result = $statement->get_result();
+            $user = $result->fetch_object();
+            return $user;
+        }
+        catch(mysqli_sql_exception $e){
+            echo $e->getMessage(), PHP_EOL;
+            exit();
+        }
+        finally
+        {
+            $link->close();
+        }
+    }
+
 }

@@ -1,10 +1,21 @@
 <?php
+$location = 'http://localhost/Golestan/Shop/checkout.php';
+if (isset($_POST['checkout'])) {
+    if (hash_equals($_SESSION['token'], $_POST['token'])) {
+        header('Location: '.$location);
+    } else {
+        header('Location: '.$location);
+    }
+}
 include '../common/header.php';
 include "../DBConfig.php";
 include("BasketController.php");
 $controller = new BasketController();
 $itemCount = 0;
 $totalPrice = 0.0;
+
+
+
 ?>
     <div class="container fill_height">
         <div class="row align-items-center fill_height">
@@ -47,7 +58,7 @@ $totalPrice = 0.0;
                 <form method="post">
                     <p>Subtotal( <?php echo $itemCount ?> item(s)):</p>
                     <p class="font-weight-bold"> EUR <?php echo $totalPrice ?> </p>
-                    <button class="btn btn-primary">Check out</button>
+                    <button class="btn btn-primary" name="checkout">Check out</button>
                 </form>
             </div>
         </div>
