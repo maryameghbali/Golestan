@@ -1,4 +1,12 @@
+<?php
+session_start();
 
+if (isset($_POST['logout']))
+{
+
+    unset($_SESSION['userID']);
+}
+?>
 
 <head>
     <title>Golestan Online Shop</title>
@@ -53,10 +61,26 @@
                                     My Account
                                     <i class="fa fa-angle-down"></i>
                                 </a>
+                                <form method="post">
                                 <ul class="account_selection">
-                                    <li><a href="/Golestan/Authentication/Login.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                                    <li><a href="/Golestan/Authentication/Registration.php"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                                    <?php
+                                        if (!(isset($_SESSION['userID']) && $_SESSION['userID']!="")){
+
+                                            ?>
+                                            <li><a href="/Golestan/Authentication/Login.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                                            <li><a href="/Golestan/Authentication/Registration.php"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+
+                                            <?php
+                                        } else {
+
+                                            ?>
+                                            <li><button type="submit" name="logout" href="/Golestan/Authentication/Login.php"><i class="fa fa-sign-in" aria-hidden="true"></i>Logout</button></li>
+
+                                            <?php
+                                        }
+                                    ?>
                                 </ul>
+                                </form>
                             </li>
                         </ul>
                     </div>

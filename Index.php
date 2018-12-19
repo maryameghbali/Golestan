@@ -4,7 +4,7 @@
 include './common/header.php';
 include ("DBConfig.php");
 include ('./Shop/ProductController.php');
-
+session_start();
 $controller = new ProductController();
 
 

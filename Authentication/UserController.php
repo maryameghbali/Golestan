@@ -41,17 +41,22 @@ class UserController
             $statement->close();
 
             $link->close();
+
         } catch (mysqli_sql_exception $e) {
             // Output error and exit upon exception
             echo $e->getMessage();
             exit;
         }
     }
+    function AssignSession($email){
 
+        $statement = $this->getUserByEmail($email);
+        $_SESSION['userID']= $statement->id;
+    }
     function loginUser($email, $pass){
         try {
             $link = DBConfig::getLink();
-            $statement = $link->prepare('SELECT * FROM shop_user WHERE email LIKE ?');
+            $statement = $link->prepare('SELECT * FROM shop_user WHERE email = ?');
             $statement->bind_param('s',$email);
             $statement->execute();
             $result = $statement->get_result();
@@ -60,6 +65,7 @@ class UserController
                 // Output User info
                 $password=$user->password;
                 if(password_verify($pass, $password)){
+                    $this->AssignSession($email);
                     return 'Welcome';
                 }
                 else
@@ -76,13 +82,15 @@ class UserController
         finally
         {
             $link->close();
+
         }
+
     }
 
-    function getUserAddressByEmail($email) {
+    function getUserByEmail($email) {
         try {
             $link = DBConfig::getLink();
-            $statement = $link->prepare('SELECT address FROM shop_user WHERE email LIKE ?');
+            $statement = $link->prepare('SELECT * FROM shop_user WHERE email = ?');
             $statement->bind_param('s',$email);
             $statement->execute();
             $result = $statement->get_result();
