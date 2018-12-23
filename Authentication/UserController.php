@@ -49,7 +49,6 @@ class UserController
         }
     }
     function AssignSession($email){
-
         $statement = $this->getUserByEmail($email);
         $_SESSION['userID']= $statement->id;
     }

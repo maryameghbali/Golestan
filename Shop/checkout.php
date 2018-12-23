@@ -1,10 +1,19 @@
 <?php
-include '../common/header.php';
+$location = 'http://localhost/Golestan/Authentication/Login.php';
+
 include "../DBConfig.php";
 include '../Authentication/UserController.php';
+session_start();
+if(isset($_POST)) {
+    if(!isset($_SESSION['userID'])) {
+        header('Location: '.$location);
+    } else {
+        include '../common/header.php';
+        $userController = new UserController();
+        $address = $userController->getUserByEmail('reza@gmail.com');
+    }
+}
 
-$userController = new UserController();
-$address = $userController->getUserAddressByEmail('reza@gmail.com');
 
 ?>
 

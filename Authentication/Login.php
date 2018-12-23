@@ -2,14 +2,28 @@
 include '../common/header.php';
 include "../DBConfig.php";
 include "UserController.php";
+
 $mes ="";
+
+// Create a key
+if (empty($_SESSION['key'])) {
+    $_SESSION['key'] = bin2hex(random_bytes(32));
+}
+
+// create CSRF token
+$token = hash_hmac('sha256',"mySecretPath: index.php", $_SESSION['key']);
 
 if(isset($_POST) & !empty($_POST)) {
 
     if (isset($_POST['login'])) 
     {
-        $controller = new UserController();
-        $mes = $controller->loginUser($_POST['inputEmail'],$_POST['inputPassword']);
+        if (hash_equals($token, $_POST['token'])) {
+            $controller = new UserController();
+            $mes = $controller->loginUser($_POST['inputEmail'],$_POST['inputPassword']);
+        } else {
+            $mes = "Validation failed";
+        }
+
     }
 
 }
@@ -21,6 +35,7 @@ if(isset($_POST) & !empty($_POST)) {
                     <h5 class="card-header">Login</h5>
                     <div class="card-body">
                     <form method="POST">
+                        <input type="hidden"  name="token" value="<?php echo $token ?>">
                         <p style="color: green;text-align: center"> <?php echo $mes?>
 
                         </p>

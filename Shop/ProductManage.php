@@ -1,16 +1,22 @@
 <?php
+$location = 'http://localhost/Golestan/Authentication/Login.php';
+
+session_start();
+$mes ="";
+if(isset($_POST)) {
+    if(!isset($_SESSION['userID'])) {
+        header('Location: '.$location);
+    }
+}
+
 include  "../common/header.php";
 include  "../common/General.php";
 include "../DBConfig.php";
 include "ProductController.php";
-$mes ="";
-if(isset($_POST) & !empty($_POST)) {
+if (isset($_POST['Add'])) {
+    $controller = new ProductController();
+    $mes = $controller->addNewProduct($_POST['Name'],$_POST['Description'],$_POST['Stock'],$_POST['Price']);
 
-    if (isset($_POST['Add'])) {
-        $controller = new ProductController();
-        $mes = $controller->addNewProduct($_POST['Name'],$_POST['Description'],$_POST['Stock'],$_POST['Price']);
-
-    }
 }
 ?>
         <div class="container fill_height" style="padding-top: 100px">

@@ -3,8 +3,8 @@ session_start();
 
 if (isset($_POST['logout']))
 {
-
     unset($_SESSION['userID']);
+    unset($_SESSION['token']);
 }
 ?>
 
@@ -36,7 +36,7 @@ if (isset($_POST['logout']))
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="top_nav_left">free shipping on all u.s orders over $50</div>
+                    <div class="top_nav_left">free shipping on all u.s orders over $50 <?php echo $_COOKIE['basket']; ?></div>
                 </div>
                 <div class="col-md-6 text-right">
                     <div class="top_nav_right">
@@ -61,7 +61,7 @@ if (isset($_POST['logout']))
                                     My Account
                                     <i class="fa fa-angle-down"></i>
                                 </a>
-                                <form method="post">
+                                <form method="post" type="submit">
                                 <ul class="account_selection">
                                     <?php
                                         if (!(isset($_SESSION['userID']) && $_SESSION['userID']!="")){

@@ -1,10 +1,13 @@
 <?php
-$location = 'http://localhost/Golestan/Shop/checkout.php';
-if (isset($_POST['checkout'])) {
-    if (hash_equals($_SESSION['token'], $_POST['token'])) {
-        header('Location: '.$location);
+$checkout = 'http://localhost/Golestan/Shop/checkout.php';
+$login = 'http://localhost/Golestan/Authentication/Login.php';
+session_start();
+
+if(isset($_POST['checkout'])) {
+    if(isset($_SESSION['userID'])) {
+        header('Location: '.$checkout);
     } else {
-        header('Location: '.$location);
+        header('Location: '.$login);
     }
 }
 include '../common/header.php';
