@@ -4,8 +4,10 @@ $location = 'http://localhost/Golestan/Authentication/Login.php';
 session_start();
 $mes ="";
 if(isset($_POST)) {
-    if(!isset($_SESSION['userID'])) {
+    if(!isset($_SESSION['userID']) || !isset($_SESSION['token'])) {
         header('Location: '.$location);
+    } else {
+        $token = $_SESSION['token'];
     }
 }
 
@@ -13,16 +15,21 @@ include  "../common/header.php";
 include  "../common/General.php";
 include "../DBConfig.php";
 include "ProductController.php";
-if (isset($_POST['Add'])) {
-    $controller = new ProductController();
-    $mes = $controller->addNewProduct($_POST['Name'],$_POST['Description'],$_POST['Stock'],$_POST['Price']);
 
+if (isset($_POST['Add'])) {
+    if (hash_equals($token, $_POST['token'])) {
+        $controller = new ProductController();
+        $mes = $controller->addNewProduct($_POST['Name'],$_POST['Description'],$_POST['Stock'],$_POST['Price']);
+    } else {
+        $mes = "Somethings goes wrong!";
+    }
 }
 ?>
         <div class="container fill_height" style="padding-top: 100px">
             <div class="row align-items-center fill_height">
                 <div class="col-md-6">
                     <form method="post" enctype="multipart/form-data">
+                        <input type="hidden"  name="token" value="<?php echo $token ?>">
                         <p style="color: green;text-align: center"> <?php echo $mes?></p>
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Name</label>
@@ -44,9 +51,6 @@ if (isset($_POST['Add'])) {
                             <label for="exampleFormControlInput1">image</label>
                             <input type="file" id="image" class="form-control" name="image">
                         </div>
-
-
-
                         <button type="submit" class="btn btn-primary"  name="Add" id="Add">Submit</button>
                     </form>
                 </div>

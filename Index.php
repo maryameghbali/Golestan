@@ -4,10 +4,20 @@
 include './common/header.php';
 include ("DBConfig.php");
 include ('./Shop/ProductController.php');
+include ('./Shop/CookieController.php');
+
 session_start();
+$msg = "";
 $controller = new ProductController();
-
-
+$cookieController = new CookieController();
+if(isset($_POST)) {
+    if(isset($_POST['addToCart'])) {
+        $productId= $_POST['addToCart'];
+        $userId = isset($_SESSION['userID']) ? $_SESSION['userID'] : -1;
+        $seesionExpire = $_SESSION['expire'];
+        $cookieController->addToCookie($productId,$_SESSION['userID'], $userId, $seesionExpire);
+    }
+}
 ?>
 <!-- Slider -->
 
@@ -18,7 +28,7 @@ $controller = new ProductController();
                 <div class="main_slider_content">
 
                     <h1>Get up to 30% Off New Arrivals</h1>
-                    <div class="red_button shop_now_button"><a href="#">shop now</a></div>
+                    <div class="red_button shop_now_button"><a href="#"><?php echo $msg;?></a></div>
                 </div>
             </div>
         </div>
@@ -42,35 +52,37 @@ $controller = new ProductController();
         </div>
         <div class="row">
             <div class="col">
-                <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
+                <form method="post">
+                    <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
 
-                <?php
-                $result = $controller->getAllProduction();
-                while ($row=mysqli_fetch_array($result))
-                { ?>
-                    <div class="product-item men">
-                        <div class="product discount product_filter">
-                            <div class="product_image">
-                                <img src="./assets/images/ProductImages/shop_items<?php echo $row['id']; ?>.jpg" >
+                    <?php
+                    $result = $controller->getAllProduction();
+                    while ($row=mysqli_fetch_array($result))
+                    { ?>
+                        <div class="product-item men">
+                            <div class="product discount product_filter">
+                                <div class="product_image">
+                                    <img src="./assets/images/ProductImages/shop_items<?php echo $row['id']; ?>.jpg" >
 
+                                </div>
+                                <div class="favorite favorite_left"></div>
+                                <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                <div class="product_info">
+                                    <h6 class="product_name"><a href="./Shop/SingleProduct.php?Id=<?php echo $row['id'] ?>"><?php echo $row['title']; ?></a></h6>
+                                    <div class="product_price">EUR <?php echo $row['price']; ?></div>
+                                </div>
                             </div>
-                            <div class="favorite favorite_left"></div>
-                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                            <div class="product_info">
-                                <h6 class="product_name"><a href="./Shop/SingleProduct.php?Id=<?php echo $row['id'] ?>"><?php echo $row['title']; ?></a></h6>
-                                <div class="product_price">EUR <?php echo $row['price']; ?></div>
-                            </div>
+                            <button class="red_button add_to_cart_button" type="submit" name="addToCart" value="<?php echo $row['id'] ?>">add to cart</button>
                         </div>
-                        <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
+
+                    <?php
+                        }
+                    ?>
+                        <!-- Product 1 -->
+
+
                     </div>
-
-                <?php
-                    }
-                ?>
-                    <!-- Product 1 -->
-
-
-                </div>
+                </form>
             </div>
         </div>
     </div>

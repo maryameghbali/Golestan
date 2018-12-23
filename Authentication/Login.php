@@ -12,6 +12,7 @@ if (empty($_SESSION['key'])) {
 
 // create CSRF token
 $token = hash_hmac('sha256',"mySecretPath: index.php", $_SESSION['key']);
+$_SESSION['token'] = $token;
 
 if(isset($_POST) & !empty($_POST)) {
 

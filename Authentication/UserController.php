@@ -1,5 +1,4 @@
 <?php
-
 class UserController
 {
 
@@ -51,6 +50,9 @@ class UserController
     function AssignSession($email){
         $statement = $this->getUserByEmail($email);
         $_SESSION['userID']= $statement->id;
+        $_SESSION['start'] = time(); // Taking now logged in time.
+        // Ending a session in 30 minutes from the starting time.
+        $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);
     }
     function loginUser($email, $pass){
         try {
