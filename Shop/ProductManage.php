@@ -28,6 +28,13 @@ if (isset($_POST['Add'])) {
         $mes = "Somethings goes wrong!";
     }
 }
+
+if(isset($_POST['deleteItem'])){
+    $item_id = $_POST['deleteItem'];
+    $userId = $_SESSION['userID'];
+    $controller->deleteItem($userId,$item_id);
+}
+
 ?>
         <div class="container">
             <div class="row" style="margin-top: 110px;">
@@ -83,17 +90,18 @@ if (isset($_POST['Add'])) {
                         while ($row=mysqli_fetch_array($result))
                         {
                             ?>
-                            <tr>
-                                <th scope="row" ><img style="height: 5rem;"
-                                                      src="/Golestan/assets/images/ProductImages/shop_items<?php echo $row[0]; ?>.jpg" >
-                                </th>
-                                <td><?php echo $row[1];?></td>
-                                <td><?php echo $row[3];?></td>
-                                <td>Euro <?php echo $row[2];?></td>
-                                <td>Euro <?php echo $row[4];?></td>
-                                <td><button class="btn btn-danger">Delete</button></td>
-                            </tr>
-
+                            <form method="post">
+                                <tr>
+                                    <th scope="row" ><img style="height: 5rem;"
+                                                          src="/Golestan/assets/images/ProductImages/shop_items<?php echo $row[0]; ?>.jpg" >
+                                    </th>
+                                    <td><?php echo $row[1];?></td>
+                                    <td><?php echo $row[3];?></td>
+                                    <td>Euro <?php echo $row[2];?></td>
+                                    <td>Euro <?php echo $row[4];?></td>
+                                    <td><button type="submit" class="btn btn-danger" name="deleteItem" value="<?php echo $row[0];?>">Delete</button></td>
+                                </tr>
+                            </form>
                             <?php
                         }
 
