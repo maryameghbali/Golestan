@@ -30,7 +30,7 @@ if (isset($_POST['Add'])) {
 }
 ?>
         <div class="container">
-            <div class="row" style="margin-top: 100px;">
+            <div class="row" style="margin-top: 110px;">
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">

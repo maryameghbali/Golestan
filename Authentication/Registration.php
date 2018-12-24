@@ -44,7 +44,7 @@ if(isset($_POST) & !empty($_POST)) {
 
                             <button type="submit" class="btn btn-primary" name="register">Submit</button>
                             </form>
-                            <a href="Registration.php">I already have an account.</a>
+                            <a href="Login.php">I already have an account.</a>
                         </div>
                     </div>
                 </div>
