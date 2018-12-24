@@ -14,8 +14,8 @@ if(isset($_POST)) {
     if(isset($_POST['addToCart'])) {
         $productId= $_POST['addToCart'];
         $userId = isset($_SESSION['userID']) ? $_SESSION['userID'] : -1;
-        $seesionExpire = $_SESSION['expire'];
-        $cookieController->addToCookie($productId,$_SESSION['userID'], $userId, $seesionExpire);
+        $sessionExpire = $_SESSION['expire'];
+        $cookieController->addToCookie($productId,$_SESSION['userID'], $userId, $sessionExpire);
     }
 }
 ?>

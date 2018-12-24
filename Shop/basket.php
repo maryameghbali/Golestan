@@ -17,8 +17,8 @@ $controller = new BasketController();
 $itemCount = 0;
 $totalPrice = 0.0;
 ?>
-    <div class="container fill_height">
-        <div class="row align-items-center fill_height">
+    <div class="container">
+        <div class="row align-items-center" style="margin-top: 150px;">
             <div class="col-sm-10">
                 <table class="table">
                     <thead class="thead-light">

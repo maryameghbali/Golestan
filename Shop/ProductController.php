@@ -10,8 +10,8 @@ class ProductController
         self::ProductController();
     }
 
-    function addNewProduct($name, $des, $stock, $price) {
-        $sql = "insert into shop_items (title,description,stock,price) values ('".$name."','".$des."',".$stock.",".$price.")";
+    function addNewProduct($name, $des, $stock, $price, $userId) {
+        $sql = "insert into shop_items (title,description,stock,price, user_id) values ('".$name."','".$des."',".$stock.",".$price.",".$userId.")";
         $link = DBConfig::getLink();
 
         if ($link->query($sql) === TRUE) {
@@ -34,5 +34,36 @@ class ProductController
         $result=mysqli_query($link,$sql);
         $link->close();
         return $result;
+    }
+
+    function getAllUserProduction($userId){
+
+        try {
+            // Open a new connection to the MySQL server
+            $mysqli = DBConfig::getLink();
+
+            // Prepare an SQL statement for execution
+            $statement = $mysqli->prepare('SELECT * FROM shop_items WHERE user_id = ?');
+
+            // Binds variables to a prepared statement as parameters
+            $statement->bind_param('i', $userId);
+
+            // Execute a prepared query
+            $statement->execute();
+
+            // Gets a result set from a prepared statement
+            $result = $statement->get_result();
+
+            // Close a prepared statement
+            $statement->close();
+
+            // Close database connection
+            $mysqli->close();
+            return $result;
+        } catch (mysqli_sql_exception $e) {
+            // Output error and exit upon exception
+            echo $e->getMessage();
+            exit;
+        }
     }
 }
