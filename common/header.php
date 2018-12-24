@@ -41,21 +41,6 @@ if (isset($_POST['logout']))
                 <div class="col-md-6 text-right">
                     <div class="top_nav_right">
                         <ul class="top_nav_menu">
-
-                            <!-- Currency / Language / My Account -->
-
-
-                            <li class="language">
-                                <a href="#">
-                                    English
-                                    <i class="fa fa-angle-down"></i>
-                                </a>
-                                <ul class="language_selection">
-
-                                    <li><a href="#">German</a></li>
-
-                                </ul>
-                            </li>
                             <li class="account">
                                 <a href="#">
                                     My Account
@@ -71,7 +56,7 @@ if (isset($_POST['logout']))
                                             <?php
                                         } else {
                                             ?>
-                                            <li><button href="/Golestan/Authentication/Login.php" type="submit" name="logout"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</button></li>
+                                            <li><button class="btn btn-info" href="/Golestan/Authentication/Login.php" type="submit" name="logout"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</button></li>
                                             <?php
                                         }
                                     ?>
@@ -97,15 +82,11 @@ if (isset($_POST['logout']))
                     <nav class="navbar">
                         <ul class="navbar_menu">
                             <li><a href="/Golestan/Index.php">home</a></li>
-                            <li><a href="#">shop</a></li>
-                            <li><a href="/Golestan/Shop/ProductManage.php">Products</a></li>
-                            <li><a href="#">pages</a></li>
+                            <li><a href="/Golestan/Shop/ProductManage.php">Sell Products</a></li>
 
                             <li><a href="contact.html">contact</a></li>
                         </ul>
                         <ul class="navbar_user">
-                            <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
                             <li class="checkout">
                                 <a href="/Golestan/Shop/basket.php">
                                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
