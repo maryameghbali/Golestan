@@ -47,9 +47,8 @@ class UserController
             exit;
         }
     }
-    function AssignSession($email){
-        $statement = $this->getUserById($_SESSION['userID']);
-        $_SESSION['userID']= $statement->id;
+    function AssignSession($id){
+        $_SESSION['userID']= $id;
         $_SESSION['start'] = time(); // Taking now logged in time.
         // Ending a session in 30 minutes from the starting time.
         $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);
@@ -66,7 +65,7 @@ class UserController
                 // Output User info
                 $password=$user->password;
                 if(password_verify($pass, $password)){
-                    $this->AssignSession($email);
+                    $this->AssignSession($user->id);
                     return 'Welcome';
                 }
                 else

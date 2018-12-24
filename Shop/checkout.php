@@ -1,11 +1,11 @@
 <?php
-$location = 'http://localhost/Golestan/Authentication/Login.php';
+$location = '/Golestan/Authentication/Login.php';
 
 include "../DBConfig.php";
 include '../Authentication/UserController.php';
 session_start();
 if(isset($_POST)) {
-    if(!isset($_SESSION['userID'])) {
+    if(!isset($_SESSION['userID']) && !isset($_SESSION['token'])) {
         header('Location: '.$location);
     } else {
         include '../common/header.php';

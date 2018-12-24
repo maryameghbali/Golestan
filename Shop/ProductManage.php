@@ -1,11 +1,11 @@
 <?php
-$location = 'http://localhost/Golestan/Authentication/Login.php';
+$loginPage = '/Golestan/Authentication/Login.php';
 
 session_start();
 $mes ="";
 if(isset($_POST)) {
-    if(!isset($_SESSION['userID']) || !isset($_SESSION['token'])) {
-        header('Location: '.$location);
+    if(!isset($_SESSION['userID']) && !isset($_SESSION['token'])) {
+        header('Location: '.$loginPage);
     } else {
         $token = $_SESSION['token'];
     }

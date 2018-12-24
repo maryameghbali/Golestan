@@ -1,10 +1,10 @@
 <?php
-$checkout = 'http://localhost/Golestan/Shop/checkout.php';
-$login = 'http://localhost/Golestan/Authentication/Login.php';
+$checkout = '/Golestan/Shop/checkout.php';
+$login = '/Golestan/Authentication/Login.php';
 session_start();
 
 if(isset($_POST['checkout'])) {
-    if(isset($_SESSION['userID'])) {
+    if(isset($_SESSION['userID']) && isset($_SESSION['token'])) {
         header('Location: '.$checkout);
     } else {
         header('Location: '.$login);
