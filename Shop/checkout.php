@@ -10,9 +10,18 @@ if(isset($_POST)) {
     } else {
         include '../common/header.php';
         $userController = new UserController();
-        $address = $userController->getUserByEmail('reza@gmail.com');
+        $result = $userController->getUserById($_SESSION['userID']);
+        $address = $result->address;
+    }
+
+    if(isset($_POST['updateAddress'])){
+        $newAddress= $_POST['newAddress'];
+        $userId = $_SESSION['userID'];
+        $userController->updateUserAddress($userId, $newAddress);
+        $address = $newAddress;
     }
 }
+
 
 
 ?>
@@ -23,8 +32,32 @@ if(isset($_POST)) {
         <div class="card col-sm-4" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title">Receiver address</h5>
-                <p class="card-text"><?php print_r($address->address)?></p>
-                <a href="#" class="card-link">Change the Address</a>
+                <p class="card-text"><?php print_r($address)?></p>
+                <a href="#" class="card-link"  data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Change the Address</a>
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New Address</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="post">
+                        <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Address:</label>
+                                    <textarea class="form-control" id="message-text" name="newAddress"></textarea>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" name="updateAddress">Update Address</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
         <div class="card col-sm-4" style="width: 18rem;">
@@ -65,22 +98,22 @@ if(isset($_POST)) {
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
-                                <form method="POST">
-                                    <p style="color: green;text-align: center"></p>
-                                    <div class="form-group">
-                                        <label for="inputEmail">Email address</label>
-                                        <input type="email" class="form-control" name="inputEmail" aria-describedby="emailHelp" placeholder="Enter email">
-                                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputPassword">Password</label>
-                                        <input type="password" class="form-control" name="inputPassword" placeholder="Password">
-                                    </div>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit"  class="btn btn-primary">Login to Paypal</button>
-                                </form>
-                            </div>
+                                <div class="modal-body">
+                                    <form method="POST">
+                                        <p style="color: green;text-align: center"></p>
+                                        <div class="form-group">
+                                            <label for="inputEmail">Email address</label>
+                                            <input type="email" class="form-control" name="inputEmail" aria-describedby="emailHelp" placeholder="Enter email">
+                                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPassword">Password</label>
+                                            <input type="password" class="form-control" name="inputPassword" placeholder="Password">
+                                        </div>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit"  class="btn btn-primary">Login to Paypal</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
