@@ -15,7 +15,7 @@ class CookieController
             if (!empty($_COOKIE['UserBasket'])) {
                 $cookie = $_COOKIE['UserBasket'];
                 $cardArray = json_decode($cookie, true);
-                array_push($cardArray, [$cookie_value => "3"]);
+                array_push($cardArray, [$cookie_value => "1"]);
                 $json = json_encode($cardArray);
             } else {
 
