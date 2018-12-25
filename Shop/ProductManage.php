@@ -5,10 +5,10 @@ $loginPage = '/Golestan/Authentication/Login.php';
 session_start();
 $mes ="";
 if(isset($_POST)) {
-    if(!isset($_SESSION['userID']) && !isset($_SESSION['token'])) {
-        header('Location: '.$loginPage);
-    } else {
+    if(isset($_SESSION['userID']) && isset($_SESSION['token'])) {
         $token = $_SESSION['token'];
+    } else {
+        header('Location: '.$loginPage);
     }
 }
 $userId = $_SESSION['userID'];

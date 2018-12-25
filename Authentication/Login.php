@@ -4,7 +4,7 @@ include "../DBConfig.php";
 include "UserController.php";
 
 $mes ="";
-
+$basketPage = '/Golestan/Authentication/basket.php';
 // Create a key
 if (empty($_SESSION['key'])) {
     $_SESSION['key'] = bin2hex(random_bytes(32));
@@ -21,6 +21,7 @@ if(isset($_POST) & !empty($_POST)) {
         if (hash_equals($token, $_POST['token'])) {
             $controller = new UserController();
             $mes = $controller->loginUser($_POST['inputEmail'],$_POST['inputPassword']);
+            header('Location: '.$basketPage);
         } else {
             $mes = "Validation failed";
         }

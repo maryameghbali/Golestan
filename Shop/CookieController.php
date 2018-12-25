@@ -10,28 +10,20 @@ class CookieController
         self::CookieController();
     }
 
-    public function addToCookie($cookie_value, $id_user, $expirationDate){
-        try {
-            $sql = "insert into shop_cookie (cookie_value, id_user, expiration_date) values ('".$cookie_value."',".$id_user.",".$expirationDate.")";
-            $link = DBConfig::getLink();
+    public function addToCookie($cookie_value, $id_user){
 
-            if ($link->query($sql) === TRUE) {
-                //$MaxId = GetMaxId($link,"shop_cookie");
-                $basketController = new BasketController();
-                $basketController->addToBasket($cookie_value, 2, $id_user);
-                return "New record created successfully";
+            if (!empty($_COOKIE['UserBasket'])) {
+                $cookie = $_COOKIE['UserBasket'];
+                $cardArray = json_decode($cookie, true);
+                array_push($cardArray, [$cookie_value => "3"]);
+                $json = json_encode($cardArray);
             } else {
-                echo "Error: " . $sql . "<br>" . $link->error;
+
+                $cardArray = array( [$cookie_value => "1"]);
+                $json = json_encode($cardArray);
+
             }
-        }
-        catch (mysqli_sql_exception $e) {
-            // Output error and exit upon exception
-                echo $e->getMessage();
-                exit;
-        } finally {
-            $link->close();    
-        }
-        
+            setcookie("UserBasket", $json, time()+3600, "/","", 0);
     }
     // public function addToCookie(){
     //     try {

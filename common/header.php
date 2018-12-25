@@ -36,7 +36,7 @@ if (isset($_POST['logout']))
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="top_nav_left">free shipping on all u.s orders over $50 <?php echo $_COOKIE['basket']; ?></div>
+                    <div class="top_nav_left">free shipping on all u.s orders over $50</div>
                 </div>
                 <div class="col-md-6 text-right">
                     <div class="top_nav_right">

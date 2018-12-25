@@ -1,11 +1,9 @@
 
 
 <?php
-include './common/header.php';
 include ("DBConfig.php");
 include ('./Shop/ProductController.php');
 include ('./Shop/CookieController.php');
-
 session_start();
 $msg = "";
 $controller = new ProductController();
@@ -14,10 +12,15 @@ if(isset($_POST)) {
     if(isset($_POST['addToCart'])) {
         $productId= $_POST['addToCart'];
         $userId = isset($_SESSION['userID']) ? $_SESSION['userID'] : -1;
-        $sessionExpire = $_SESSION['expire'];
-        $cookieController->addToCookie($productId,$_SESSION['userID'], $userId, $sessionExpire);
+        $cookieController->addToCookie($productId, $userId);
     }
 }
+include './common/header.php';
+
+
+
+
+
 ?>
 <!-- Slider -->
 

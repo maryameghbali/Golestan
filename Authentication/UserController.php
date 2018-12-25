@@ -53,6 +53,37 @@ class UserController
         // Ending a session in 30 minutes from the starting time.
         $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);
     }
+    function AddCookieToDB($UId){
+
+        try {
+
+                if (!empty($_COOKIE['UserBasket'])) {
+                    $cookie = $_COOKIE['UserBasket'];
+                    $cardArray = json_decode($cookie, true);
+                    $json = json_encode($cardArray);
+                }
+                $expirationDate = time()+3600;
+                $loggedin = isset($_SESSION['userID']) ? 1 : 0;
+                $sql = "insert into shop_cookie (cookie_value, id_user, loggedin, expiration_date) values ('".$json."',".$UId.",".$loggedin.",".$expirationDate.")";
+                $link = DBConfig::getLink();
+
+                if ($link->query($sql) === TRUE) {
+                    //$MaxId = GetMaxId($link,"shop_cookie");
+                    // $basketController = new BasketController();
+                    // $basketController->addToBasket($json, 2, $id_user);
+                    return "New record created successfully";
+                } else {
+                    echo "Error: " . $sql . "<br>" . $link->error;
+                }
+        }
+        catch (mysqli_sql_exception $e) {
+            // Output error and exit upon exception
+        echo $e->getMessage();
+        exit;
+        } finally {
+            $link->close();
+        }
+    }
     function loginUser($email, $pass){
         try {
             $link = DBConfig::getLink();
@@ -66,6 +97,7 @@ class UserController
                 $password=$user->password;
                 if(password_verify($pass, $password)){
                     $this->AssignSession($user->id);
+                    $this->AddCookieToDB($user->id);
                     return 'Welcome';
                 }
                 else
