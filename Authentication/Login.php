@@ -1,10 +1,10 @@
 <?php
-include '../common/header.php';
+session_start();
 include "../DBConfig.php";
 include "UserController.php";
 
 $mes ="";
-$basketPage = '/Golestan/Authentication/basket.php';
+$basketPage = '/Golestan/Shop/basket.php';
 // Create a key
 if (empty($_SESSION['key'])) {
     $_SESSION['key'] = bin2hex(random_bytes(32));
@@ -13,10 +13,9 @@ if (empty($_SESSION['key'])) {
 // create CSRF token
 $token = hash_hmac('sha256',"mySecretPath: index.php", $_SESSION['key']);
 $_SESSION['token'] = $token;
-
 if(isset($_POST) & !empty($_POST)) {
 
-    if (isset($_POST['login'])) 
+    if (isset($_POST['login']))
     {
         if (hash_equals($token, $_POST['token'])) {
             $controller = new UserController();
@@ -29,6 +28,10 @@ if(isset($_POST) & !empty($_POST)) {
     }
 
 }
+include '../common/header.php';
+
+
+
 ?>
     <div class="container fill_height" style="padding-top: 100px">
         <div class="row align-items-center fill_height">
