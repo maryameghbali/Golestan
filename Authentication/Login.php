@@ -4,7 +4,8 @@ include "../DBConfig.php";
 include "UserController.php";
 
 $mes ="";
-$basketPage = '/Golestan/Shop/basket.php';
+$basketPage = '/Golestan/Shop/checkout.php';
+$productManage = '/Golestan/Shop/ProductManage.php';
 // Create a key
 if (empty($_SESSION['key'])) {
     $_SESSION['key'] = bin2hex(random_bytes(32));
@@ -20,7 +21,17 @@ if(isset($_POST) & !empty($_POST)) {
         if (hash_equals($token, $_POST['token'])) {
             $controller = new UserController();
             $mes = $controller->loginUser($_POST['inputEmail'],$_POST['inputPassword']);
-            header('Location: '.$basketPage);
+            $source = $_GET['from'];
+
+            if($source == "'checkout'")
+            {
+                header('Location: '.$basketPage);
+            }
+            elseif ($source == "'addProduct'")
+            {
+                header('Location: '.$productManage);
+            }
+
         } else {
             $mes = "Validation failed";
         }
@@ -40,9 +51,8 @@ include '../common/header.php';
                     <h5 class="card-header">Login</h5>
                     <div class="card-body">
                     <form method="POST">
-                        <input type="hidden"  name="token" value="<?php echo $token ?>">
                         <p style="color: green;text-align: center"> <?php echo $mes?>
-
+                        <input type="hidden"  name="token" value="<?php echo $token ?>">
                         </p>
                         <div class="form-group">
                             <label for="inputEmail">Email address</label>

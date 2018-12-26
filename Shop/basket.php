@@ -1,6 +1,6 @@
 <?php
 $checkout = '/Golestan/Shop/checkout.php';
-$login = '/Golestan/Authentication/Login.php';
+$login = "/Golestan/Authentication/Login.php?from='checkout'";
 session_start();
 
 if(isset($_POST['checkout'])) {

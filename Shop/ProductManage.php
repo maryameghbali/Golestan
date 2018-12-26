@@ -1,5 +1,5 @@
 <?php
-$loginPage = '/Golestan/Authentication/Login.php';
+$loginPage = "/Golestan/Authentication/Login.php?from='addProduct'";
 
 
 session_start();
