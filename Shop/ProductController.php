@@ -92,4 +92,35 @@ class ProductController
             exit;
         }
     }
+
+    function getProdcutById($id){
+
+        try {
+            // Open a new connection to the MySQL server
+            $mysqli = DBConfig::getLink();
+
+            // Prepare an SQL statement for execution
+            $statement = $mysqli->prepare('SELECT * FROM shop_items WHERE id = ?');
+
+            // Binds variables to a prepared statement as parameters
+            $statement->bind_param('i', $id);
+
+            // Execute a prepared query
+            $statement->execute();
+
+            // Gets a result set from a prepared statement
+            $result = $statement->get_result();
+
+            // Close a prepared statement
+            $statement->close();
+
+            // Close database connection
+            $mysqli->close();
+            return $result;
+        } catch (mysqli_sql_exception $e) {
+            // Output error and exit upon exception
+            echo $e->getMessage();
+            exit;
+        }
+    }
 }

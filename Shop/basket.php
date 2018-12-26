@@ -13,9 +13,13 @@ if(isset($_POST['checkout'])) {
 include '../common/header.php';
 include "../DBConfig.php";
 include("BasketController.php");
+include("productController.php");
 $controller = new BasketController();
+$productController = new ProductController();
 $itemCount = 0;
 $totalPrice = 0.0;
+$cookie = $_COOKIE['UserBasket'];
+$cardArray = json_decode($cookie, true);
 ?>
     <div class="container">
         <div class="row align-items-center" style="margin-top: 150px;">
@@ -31,27 +35,31 @@ $totalPrice = 0.0;
                     </tr>
                     </thead>
                     <tbody>
-                    <?php
-                    $result = $controller->getAllBasketItems("12321");
-                    while ($row=mysqli_fetch_array($result))
+                    <?php if(isset($_COOKIE['UserBasket']))
                     {
-                        $totalPrice += $row[2];
-                        $itemCount++;
-                        ?>
-                    <tr>
-                        <th scope="row" ><img style="height: 5rem;"
-                                              src="/Golestan/assets/images/ProductImages/shop_items<?php echo $row[0]; ?>.jpg" >
-                        </th>
-                        <td><?php echo $row[1];?></td>
-                        <td><?php echo $row[3];?></td>
-                        <td>Euro <?php echo $row[2];?></td>
-                        <td><button class="btn btn-danger">Delete</button></td>
-                    </tr>
-
-                        <?php
-                    }
-
-                    ?>
+                        foreach($cardArray as $products){ 
+                            foreach($products as $key => $value) 
+                            {
+                                $rows = $productController->getProdcutById($key);
+                                while ($row=mysqli_fetch_array($rows))
+                                {
+                                $totalPrice += $row[4];
+                                $itemCount++;
+                                ?>
+                                    <tr>
+                                        <th scope="row" ><img style="height: 5rem;"
+                                                            src="/Golestan/assets/images/ProductImages/shop_items<?php echo $row[0]; ?>.jpg" >
+                                        </th>
+                                        <td><?php echo $row[1];?></td>
+                                        <td><?php echo $row[3];?></td>
+                                        <td>Euro <?php echo $row[4];?></td>
+                                        <td><button class="btn btn-danger" value="<?php echo $row[0];?>">Delete</button></td>
+                                    </tr>
+                            <?php 
+                                } 
+                            }
+                        }
+                    }?>
                 </table>
             </div>
             <div class="col-sm-2">
