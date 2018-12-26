@@ -13,13 +13,17 @@ if(isset($_POST['checkout'])) {
 include '../common/header.php';
 include "../DBConfig.php";
 include("BasketController.php");
-include("productController.php");
+include("ProductController.php");
 $controller = new BasketController();
 $productController = new ProductController();
 $itemCount = 0;
 $totalPrice = 0.0;
-$cookie = $_COOKIE['UserBasket'];
-$cardArray = json_decode($cookie, true);
+if(isset($_COOKIE['UserBasket']))
+{
+    $cookie = $_COOKIE['UserBasket'];
+    $cardArray = json_decode($cookie, true);
+}
+
 ?>
     <div class="container">
         <div class="row align-items-center" style="margin-top: 150px;">
