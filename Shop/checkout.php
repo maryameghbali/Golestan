@@ -1,5 +1,5 @@
 <?php
-$location = '/Golestan/Authentication/Login.php';
+$location = "/Golestan/Authentication/Login.php?from='checkout'";
 
 include "../DBConfig.php";
 include '../Authentication/UserController.php';
