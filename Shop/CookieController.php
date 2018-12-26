@@ -43,6 +43,10 @@ class CookieController
         }
     }
 
+    function deleteCookies() {
+        setcookie("UserBasket", "", time()-9600, "/",null, null, true);
+    }
+
     function AddCookieToDB($UId){
 
         try {

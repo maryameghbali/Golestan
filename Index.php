@@ -13,6 +13,7 @@ if(isset($_POST)) {
         $productId= $_POST['addToCart'];
         $userId = isset($_SESSION['userID']) ? $_SESSION['userID'] : -1;
         $cookieController->addToCookie($productId, 1);
+        header("Refresh:0");
     }
 }
 include './common/header.php';

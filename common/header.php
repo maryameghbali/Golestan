@@ -1,5 +1,13 @@
 <?php
 session_start();
+$countBasket = 0;
+
+if(isset($_POST) && isset($_COOKIE['UserBasket'])) {
+    $cookie = $_COOKIE['UserBasket'];
+    $cardArray = json_decode($cookie, true);
+    $countBasket =  count($cardArray);
+}
+
 
 if (isset($_POST['logout']))
 {
@@ -90,7 +98,7 @@ if (isset($_POST['logout']))
                             <li class="checkout">
                                 <a href="/Golestan/Shop/basket.php">
                                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                    <span id="checkout_items" class="checkout_items">2</span>
+                                    <span id="checkout_items" class="checkout_items"><?php echo $countBasket; ?></span>
                                 </a>
                             </li>
                         </ul>
