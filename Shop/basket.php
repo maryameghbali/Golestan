@@ -24,6 +24,12 @@ if(isset($_COOKIE['UserBasket']))
     $cardArray = json_decode($cookie, true);
 }
 
+$msg= "NULL";
+if(isset($_POST['update'])){
+    $msg = "CALLED";
+}
+
+
 ?>
     <div class="container">
         <div class="row align-items-center" style="margin-top: 150px;">
@@ -33,18 +39,19 @@ if(isset($_COOKIE['UserBasket']))
                     <tr>
                         <th scope="col"></th>
                         <th scope="col">product</th>
-                        <th scope="col">Quantity</th>
                         <th scope="col">Price</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Action
+                        <th scope="col"><?php echo $msg; ?></th>
                     </tr>
                     </thead>
                     <tbody>
                     <?php if(isset($_COOKIE['UserBasket']))
                     {
                         foreach($cardArray as $products){ 
-                            foreach($products as $key => $value) 
+                            foreach($products as $productId => $quantity)
                             {
-                                $rows = $productController->getProdcutById($key);
+                                $rows = $productController->getProdcutById($productId);
                                 while ($row=mysqli_fetch_array($rows))
                                 {
                                 $totalPrice += $row[4];
@@ -55,8 +62,16 @@ if(isset($_COOKIE['UserBasket']))
                                                             src="/Golestan/assets/images/ProductImages/shop_items<?php echo $row[0]; ?>.jpg" >
                                         </th>
                                         <td><?php echo $row[1];?></td>
-                                        <td><?php echo $row[3];?></td>
                                         <td>Euro <?php echo $row[4];?></td>
+                                        <td><input type="number"
+                                                   onchange="updateQuantity(<?php echo $productId?>, value)"
+                                                   type="number"
+                                                   max="<?php echo $row[3]?>"
+                                                   min="1"
+                                                   value="<?php echo $quantity;?>"
+                                                   style="width: 50px;"
+                                            >
+                                        </td>
                                         <td><button class="btn btn-danger" value="<?php echo $row[0];?>">Delete</button></td>
                                     </tr>
                             <?php 
@@ -75,6 +90,17 @@ if(isset($_COOKIE['UserBasket']))
             </div>
         </div>
     </div>
+<script>
+    function updateQuantity(productId, quantity) {
+        $.ajax({url: 'basket.php',
+                data: {productId: productId, quantity:quantity},
+                type: 'post',
+                success: function (output) {
+                    console.warn(output);
+                }
+        });
+    }
+</script>
 <?php
 include '../common/footer.php';
 ?>

@@ -23,7 +23,7 @@ class CookieController
                 $json = json_encode($cardArray);
 
             }
-            setcookie("UserBasket", $json, time()+3600, "/","", 0);
+            setcookie("UserBasket", $json, time()+9600, "/",null, null, true);
     }
     // public function addToCookie(){
     //     try {
