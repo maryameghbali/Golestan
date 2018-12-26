@@ -12,7 +12,7 @@ if(isset($_POST)) {
     if(isset($_POST['addToCart'])) {
         $productId= $_POST['addToCart'];
         $userId = isset($_SESSION['userID']) ? $_SESSION['userID'] : -1;
-        $cookieController->addToCookie($productId, $userId);
+        $cookieController->addToCookie($productId, 1);
     }
 }
 include './common/header.php';
