@@ -25,7 +25,7 @@ if(isset($_COOKIE['UserBasket']))
 }
 
 $msg= "NULL";
-if(isset($_POST['update'])){
+if(isset($_POST['productId'])){
     $msg = "CALLED";
 }
 
