@@ -11,21 +11,48 @@ class ProductController
     }
 
     function addNewProduct($name, $des, $stock, $price, $userId) {
-        $sql = "insert into shop_items (title,description,stock,price, user_id) values ('".$name."','".$des."',".$stock.",".$price.",".$userId.")";
-        $link = DBConfig::getLink();
+        try {
+            // Open a new connection to the MySQL server
+            $mysqli = DBConfig::getLink();
 
-        if ($link->query($sql) === TRUE) {
+            // Prepare an SQL statement for execution
+            $statement = $mysqli->prepare('INSERT INTO shop_items (
+            title,
+            description,
+            stock,
+            price,
+            user_id
+        ) VALUES (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?
+        );
+    ');
+
+            // Bind variables to a prepared statement as parameters
+            $statement->bind_param('ssiii', $name, $des, $stock, $price, $userId);
+
+            // Execute a prepared Query
+            $statement->execute();
+
+            // Close a prepared statement
+            $statement->close();
+
+            // Quick & "dirty" way to fetch newly created address id
+            $id = $mysqli->insert_id;
 
             $fn=$_FILES['image']['tmp_name'];
-            $MaxId = GetMaxId($link,"shop_items");
-            $path = "../assets/images/ProductImages/shop_items".$MaxId.".jpg";
+            $path = "../assets/images/ProductImages/shop_items".$id.".jpg";
             move_uploaded_file($fn,$path);
-            return "New record created successfully";
-        } else {
-            echo "Error: " . $sql . "<br>" . $link->error;
+            // Close database connection
+            $mysqli->close();
+        } catch (mysqli_sql_exception $e) {
+            // Output error and exit upon exception
+            echo $e->getMessage();
+            exit;
         }
-
-        $link->close();
     }
 
     function getAllProduction(){

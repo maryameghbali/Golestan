@@ -10,76 +10,84 @@ if(isset($_POST['checkout'])) {
         header('Location: '.$login);
     }
 }
-include '../common/header.php';
+
 include "../DBConfig.php";
-include("BasketController.php");
 include("ProductController.php");
-$controller = new BasketController();
+include("CookieController.php");
 $productController = new ProductController();
+$cookieController = new CookieController();
 $itemCount = 0;
 $totalPrice = 0.0;
-if(isset($_COOKIE['UserBasket']))
-{
-    $cookie = $_COOKIE['UserBasket'];
-    $cardArray = json_decode($cookie, true);
+
+if(isset($_POST)){
+    if(isset($_POST['deleteItem'])){
+        $deleteItem = $_POST['deleteItem'];
+        $msg= $cookieController->deleteCookie($deleteItem);
+        header("Refresh:0");
+    }
+    if(isset($_COOKIE['UserBasket']))
+    {
+        $cookie = $_COOKIE['UserBasket'];
+        $cardArray = json_decode($cookie, true);
+    }
 }
 
-$msg= "NULL";
-if(isset($_POST['productId'])){
-    $msg = "CALLED";
-}
-
+include '../common/header.php';
 
 ?>
     <div class="container">
         <div class="row align-items-center" style="margin-top: 150px;">
             <div class="col-sm-10">
-                <table class="table">
-                    <thead class="thead-light">
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">product</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Action
-                        <th scope="col"><?php echo $msg; ?></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php if(isset($_COOKIE['UserBasket']))
-                    {
-                        foreach($cardArray as $products){ 
-                            foreach($products as $productId => $quantity)
-                            {
-                                $rows = $productController->getProdcutById($productId);
-                                while ($row=mysqli_fetch_array($rows))
+                <form method="post">
+                    <table class="table">
+                        <thead class="thead-light">
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">product</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Action
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php if(isset($_COOKIE['UserBasket']))
+                        {
+                            foreach($cardArray as $products){
+                                foreach($products as $productId => $quantity)
                                 {
-                                $totalPrice += $row[4];
-                                $itemCount++;
-                                ?>
-                                    <tr>
-                                        <th scope="row" ><img style="height: 5rem;"
-                                                            src="/Golestan/assets/images/ProductImages/shop_items<?php echo $row[0]; ?>.jpg" >
-                                        </th>
-                                        <td><?php echo $row[1];?></td>
-                                        <td>Euro <?php echo $row[4];?></td>
-                                        <td><input type="number"
-                                                   onchange="updateQuantity(<?php echo $productId?>, value)"
-                                                   type="number"
-                                                   max="<?php echo $row[3]?>"
-                                                   min="1"
-                                                   value="<?php echo $quantity;?>"
-                                                   style="width: 50px;"
-                                            >
-                                        </td>
-                                        <td><button class="btn btn-danger" value="<?php echo $row[0];?>">Delete</button></td>
-                                    </tr>
-                            <?php 
-                                } 
+                                    $rows = $productController->getProdcutById($productId);
+                                    while ($row=mysqli_fetch_array($rows))
+                                    {
+                                    $totalPrice += $row[4];
+
+                                    ?>
+                                        <tr>
+                                            <th scope="row" >
+                                                <img style="height: 5rem;"
+                                                     src="/Golestan/assets/images/ProductImages/shop_items<?php echo $row[0]; ?>.jpg" >
+                                            </th>
+                                            <td><?php echo $row[1];?></td>
+                                            <td>Euro <?php echo $row[4];?></td>
+                                            <td><input type="number"
+                                                       onchange="updateQuantity(<?php echo $productId?>, value)"
+                                                       type="number"
+                                                       max="<?php echo $row[3]?>"
+                                                       min="1"
+                                                       value="<?php echo $quantity;?>"
+                                                       style="width: 50px;"
+                                                >
+                                            </td>
+                                            <td><button type="submit" name="deleteItem" class="btn btn-danger"
+                                                        value="<?php echo $row[0];?>">Delete</button></td>
+                                        </tr>
+                                <?php
+                                        $itemCount++;
+                                    }
+                                }
                             }
-                        }
-                    }?>
-                </table>
+                        }?>
+                    </table>
+                </form>
             </div>
             <div class="col-sm-2">
                 <form method="post">

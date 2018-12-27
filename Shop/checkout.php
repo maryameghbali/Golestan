@@ -1,13 +1,19 @@
 <?php
 $location = "/Golestan/Authentication/Login.php?from='checkout'";
-
+$index = "/Golestan/Index.php";
 include "../DBConfig.php";
 include '../Authentication/UserController.php';
+
 session_start();
 $rangeValue = 0;
-
+$cookieController = new CookieController();
 
 if(isset($_POST)) {
+    if(isset($_POST['finalize'])){
+        $cookieController->deleteCookies();
+        header('Location: '.$index);
+    }
+
     if(!isset($_SESSION['userID']) && !isset($_SESSION['token'])) {
         header('Location: '.$location);
     } else {
@@ -169,7 +175,7 @@ if(isset($_POST)) {
                                                placeholder="Password">
                                     </div>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Login to Paypal</button>
+                                    <button type="submit" class="btn btn-primary" data-dismiss="modal">Login to Paypal</button>
                                 </form>
                             </div>
                         </div>
@@ -185,9 +191,9 @@ if(isset($_POST)) {
                     <form method="post">
                         <div class="card-body">
                             <h5 class="card-title">Purchase History</h5>
-                            <p class="card-text"></p>
+                            <p class="card-text">Thank you for your purchase, see you soon.</p>
                         </div>
-                        <button type="submit" name="btnPayment" class="btn btn-primary float-sm-right">Previous</button>
+                        <button type="submit" name="finalize" class="btn btn-primary float-sm-right">Return To shop</button>
                     </form>
                 </div>
                 <?php
