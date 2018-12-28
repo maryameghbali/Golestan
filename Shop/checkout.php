@@ -3,24 +3,26 @@ $location = "/Golestan/Authentication/Login.php?from='checkout'";
 $index = "/Golestan/Index.php";
 include "../DBConfig.php";
 include '../Authentication/UserController.php';
-
+include ('OrderController.php');
 session_start();
 $rangeValue = 0;
 $cookieController = new CookieController();
+$orderController = new OrderController();
 
 if(isset($_POST)) {
-    if(isset($_POST['finalize'])){
-        $cookieController->deleteCookies();
-        header('Location: '.$index);
-    }
 
     if(!isset($_SESSION['userID']) && !isset($_SESSION['token'])) {
         header('Location: '.$location);
     } else {
-        include '../common/header.php';
         $userController = new UserController();
         $result = $userController->getUserById($_SESSION['userID']);
         $address = $result->address;
+    }
+
+    if(isset($_POST['finalize'])){
+        $orderController->addNewOrder();
+        $cookieController->deleteCookies();
+        header('Location: '.$index);
     }
 
     if(isset($_POST['updateAddress'])){
@@ -41,6 +43,7 @@ if(isset($_POST)) {
         $rangeValue = 2;
     }
 }
+include '../common/header.php';
 
 
 ?>

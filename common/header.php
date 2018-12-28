@@ -1,9 +1,6 @@
 <?php
-
-
 $countBasket = 0;
-$UserName ="" ;
-
+$UserName ="";
 
 if(isset($_POST) && isset($_COOKIE['UserBasket'])) {
     $cookie = $_COOKIE['UserBasket'];
@@ -14,6 +11,7 @@ if(isset($_POST) && isset($_COOKIE['UserBasket'])) {
 
 if (isset($_POST['logout']))
 {
+    include_once('../Shop/CookieController.php');
     $cookieController = new CookieController();
     $cookieController->updateLoggedInToDb($_SESSION['userID'],0);
     unset($_SESSION['userID']);
@@ -82,6 +80,7 @@ if(isset($_SESSION['UserName'])) {
                                             <?php
                                         } else {
                                             ?>
+                                            <li><a href="/Golestan/Shop/viewOrders.php"><i aria-hidden="true"></i>View Orders</a></li>
                                             <li><button class="btn btn-info" href="/Golestan/Authentication/Login.php" type="submit" name="logout"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</button></li>
                                             <?php
                                         }

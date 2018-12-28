@@ -6,6 +6,7 @@ include "UserController.php";
 $mes ="";
 $basketPage = '/Golestan/Shop/checkout.php';
 $productManage = '/Golestan/Shop/ProductManage.php';
+$viewOrders = '/Golestan/Shop/viewOrders.php';
 // Create a key
 if (empty($_SESSION['key'])) {
     $_SESSION['key'] = bin2hex(random_bytes(32));
@@ -30,6 +31,10 @@ if(isset($_POST) & !empty($_POST)) {
             elseif ($source == "'addProduct'")
             {
                 header('Location: '.$productManage);
+            }
+            elseif ($source == "'orders'")
+            {
+                header('Location: '.$viewOrders);
             }
             header("Refresh:0");
 

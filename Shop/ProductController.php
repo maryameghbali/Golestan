@@ -32,7 +32,7 @@ class ProductController
     ');
 
             // Bind variables to a prepared statement as parameters
-            $statement->bind_param('ssiii', $name, $des, $stock, $price, $userId);
+            $statement->bind_param('ssidi', $name, $des, $stock, $price, $userId);
 
             // Execute a prepared Query
             $statement->execute();
