@@ -23,7 +23,19 @@ $controller = new ProductController();
 if (isset($_POST['Add'])) {
     if (hash_equals($token, $_POST['token'])) {
         $controller = new ProductController();
-        $mes = $controller->addNewProduct($_POST['Name'],$_POST['Description'],$_POST['Stock'],$_POST['Price'], $_SESSION['userID']);
+        $name = $_POST['Name'];
+        $des = $_POST['Description'];
+        $stock = $_POST['Stock'];
+        $price = $_POST['Price'];
+
+        if(is_numeric($stock) && is_numeric($price))
+        {
+            $mes = $controller->addNewProduct($name,$des,$stock,$price, $_SESSION['userID']);
+        }
+        else {
+            $mes = "Please enter the value correctly";
+        }
+
     } else {
         $mes = "Somethings goes wrong!";
     }

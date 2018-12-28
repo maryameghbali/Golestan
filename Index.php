@@ -70,9 +70,10 @@ include './common/header.php';
 
                                 </div>
                                 <div class="favorite favorite_left"></div>
-                                <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                                <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span><?php echo $row['id'] ?></span></div>
                                 <div class="product_info">
-                                    <h6 class="product_name"><a href="./Shop/SingleProduct.php?Id=<?php echo $row['id'] ?>"><?php echo $row['title']; ?></a></h6>
+                                    <h6 class="product_name"><a href="./Shop/SingleProduct.php?Id=<?php echo $row['id'] ?>">
+                                            <?php echo htmlspecialchars($row['title'], ENT_QUOTES, 'UTF-8'); ?></a></h6>
                                     <div class="product_price">EUR <?php echo $row['price']; ?></div>
                                 </div>
                             </div>

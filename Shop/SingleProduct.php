@@ -42,8 +42,8 @@ if ($result=mysqli_query($link,$sql)) {
         <div class="col-lg-5">
             <div class="product_details">
                 <div class="product_details_title">
-                    <h2><?php echo $row[1]; ?></h2>
-                    <p><?php echo substr($row[2],0,200); ?>...</p>
+                    <h2><?php echo htmlspecialchars($row[1], ENT_QUOTES, 'UTF-8'); ?></h2>
+                    <p><?php echo substr(htmlspecialchars($row[2], ENT_QUOTES, 'UTF-8'),0,200); ?>...</p>
                 </div>
                 <div class="free_delivery d-flex flex-row align-items-center justify-content-center">
                     <span class="ti-truck"></span><span>free delivery</span>
