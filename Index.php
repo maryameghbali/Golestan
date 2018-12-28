@@ -66,8 +66,9 @@ include './common/header.php';
                         <div class="product-item men">
                             <div class="product discount product_filter">
                                 <div class="product_image">
-                                    <img src="./assets/images/ProductImages/shop_items<?php echo $row['id']; ?>.jpg" >
-
+                                <a  href="./Shop/SingleProduct.php?Id=<?php echo $row['id'] ?>">
+                                <img src="./assets/images/ProductImages/shop_items<?php echo $row['id']; ?>.jpg" >
+                                </a>
                                 </div>
                                 <div class="favorite favorite_left"></div>
                                 <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>

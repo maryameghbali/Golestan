@@ -49,7 +49,7 @@ include '../common/header.php';
 
 ?>
     <div class="container">
-        <div class="row align-items-center" style="margin-top: 150px;">
+        <div class="row align-items-center" style="margin-top: 155px;">
             <div class="col-sm-10">
                 <form method="post">
                     <table class="table">
@@ -71,7 +71,7 @@ include '../common/header.php';
                                     $rows = $productController->getProdcutById($productId);
                                     while ($row=mysqli_fetch_array($rows))
                                     {
-                                    $totalPrice += $row[4];
+                                    $totalPrice += $row[4] * $quantity;
 
                                     ?>
                                         <tr>
@@ -81,8 +81,7 @@ include '../common/header.php';
                                             </th>
                                             <td><?php echo htmlspecialchars($row[1], ENT_QUOTES, 'UTF-8');?></td>
                                             <td>Euro <?php echo $row[4];?></td>
-                                            <td><input type="number"
-                                                       onchange="updateQuantity(<?php echo $productId?>, value)"
+                                            <td><input onchange="updateQuantity(<?php echo $productId?>, value)"
                                                        type="number"
                                                        max="<?php echo $row[3]?>"
                                                        min="1"
@@ -94,7 +93,7 @@ include '../common/header.php';
                                                         value="<?php echo $row[0];?>">Delete</button></td>
                                         </tr>
                                 <?php
-                                        $itemCount++;
+                                        $itemCount += $quantity;
                                     }
                                 }
                             }
@@ -103,7 +102,7 @@ include '../common/header.php';
                 </form>
             </div>
             <div class="col-sm-2">
-                <form method="post">
+                <form method="post" style="margin-top: 15px;">
                     <p>Subtotal( <?php echo $itemCount ?> item(s)):</p>
                     <p class="font-weight-bold"> EUR <?php echo $totalPrice ?> </p>
                     <button class="btn btn-primary" name="checkout" <?php echo $isThereItem?>>Check out</button>

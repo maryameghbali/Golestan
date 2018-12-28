@@ -1,15 +1,28 @@
 <?php
 
-include  "../common/header.php";
 include  "../common/General.php";
 include "../DBConfig.php";
+include ('ProductController.php');
+include ('CookieController.php');
+session_start();
+$msg = "";
+$productController = new ProductController();
+$cookieController = new CookieController();
+if(isset($_POST)) {
+    if(isset($_POST['addItem'])) {
+        $productId= $_POST['addItem'];
+        $quantity = $_POST['quantity'];
+        $userId = isset($_SESSION['userID']) ? $_SESSION['userID'] : -1;
+        $cookieController->addToCookie($productId, $quantity);
+        header("Refresh:0");
+    }
+}
 
 $ShowId=$_GET['Id'];
-$sql = "select *  from shop_items where id='$ShowId'";
+$result = $productController->getProdcutById($ShowId);
+$row=mysqli_fetch_row($result);
 
-if ($result=mysqli_query($link,$sql)) {
-    $row=mysqli_fetch_row($result);
-}
+include  "../common/header.php";
 ?>
 
 <div class="container single_product_container">
@@ -65,16 +78,24 @@ if ($result=mysqli_query($link,$sql)) {
                         <li style="background: #60b3f3"></li>
                     </ul>
                 </div>
-                <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
-                    <span>Quantity:</span>
-                    <div class="quantity_selector">
-                        <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                        <span id="quantity_value">1</span>
-                        <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                <form method="post">
+                    <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
+                        <span>Quantity:</span>
+                        <div class="quantity_selector">
+                        <input 
+                            id="quantity_value"
+                            name="quantity"
+                            type="number"
+                            max="<?php echo $row[3]?>"
+                            min="1"
+                            value="1"
+                            style="width: 50px; padding: 5px; text-align: center; font-size:18px;"
+                        >
+                        </div>
+                        <div><button type="submit" name="addItem" class="btn btn-danger red_button" value="<?php echo $row[0]?>">Add to cart</button></div>
+                        <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
                     </div>
-                    <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
-                    <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

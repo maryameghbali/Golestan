@@ -16,10 +16,8 @@ class CookieController
             array_push($cardArray, [$cookie_value => $quantity]);
             $json = json_encode($cardArray);
         } else {
-
             $cardArray = array( [$cookie_value => $quantity]);
             $json = json_encode($cardArray);
-
         }
         setcookie("UserBasket", $json, time()+(3600*24*7), "/",null, null, true);
         if(isset($_SESSION['userID'])){
