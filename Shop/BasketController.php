@@ -73,4 +73,13 @@ class BasketController
             exit;
         }
     }
+
+    function getBasketCount() {
+        if(isset($_POST) && isset($_COOKIE['UserBasket'])) {
+            $cookie = $_COOKIE['UserBasket'];
+            $cardArray = json_decode($cookie, true);
+            return count($cardArray);
+        }
+        return '0';
+    }
 }

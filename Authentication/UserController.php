@@ -68,6 +68,7 @@ class UserController
             while ($user = $result->fetch_object()) {
                 // Output User info
                 $password=$user->password;
+
                 if(password_verify($pass, $password)){
                     $this->AssignSession($user->id,$user->name);
                     $cookieController = new CookieController();

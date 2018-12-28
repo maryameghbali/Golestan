@@ -30,6 +30,19 @@ if(isset($_POST)){
         $cookie = $_COOKIE['UserBasket'];
         $cardArray = json_decode($cookie, true);
     }
+    if(isset($_COOKIE['UserBasket'])) {
+        $cookie = $_COOKIE['UserBasket'];
+        $cardArray = json_decode($cookie, true);
+        $countBasket =  count($cardArray);
+        if ($countBasket <= 0) {
+            $isThereItem = 'disabled';
+        }
+        else {
+            $isThereItem = "";
+        }
+    }else {
+        $isThereItem = "disabled";
+    }
 }
 
 include '../common/header.php';
@@ -93,7 +106,7 @@ include '../common/header.php';
                 <form method="post">
                     <p>Subtotal( <?php echo $itemCount ?> item(s)):</p>
                     <p class="font-weight-bold"> EUR <?php echo $totalPrice ?> </p>
-                    <button class="btn btn-primary" name="checkout">Check out</button>
+                    <button class="btn btn-primary" name="checkout" <?php echo $isThereItem?>>Check out</button>
                 </form>
             </div>
         </div>
