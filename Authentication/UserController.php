@@ -49,8 +49,9 @@ class UserController
             exit;
         }
     }
-    function AssignSession($id){
+    function AssignSession($id,$name){
         $_SESSION['userID']= $id;
+        $_SESSION['UserName']= $name;
         $_SESSION['start'] = time(); // Taking now logged in time.
         // Ending a session in 30 minutes from the starting time.
         $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);
@@ -68,9 +69,24 @@ class UserController
                 // Output User info
                 $password=$user->password;
                 if(password_verify($pass, $password)){
-                    $this->AssignSession($user->id);
+                    $this->AssignSession($user->id,$user->name);
                     $cookieController = new CookieController();
-                    $cookieController->AddCookieToDB($user->id);
+                    if (!empty($_COOKIE['UserBasket']))
+                    {
+                         $cookieController->AddCookieToDB($user->id);
+                    }
+                    else
+                    {
+                        $result = $cookieController->getCookieByUserId($user->id);
+                        if ($result!= null && $result!="")
+                        {
+                            if ($result->loggedin == 0)
+                                setcookie("UserBasket", $result->cookie_value,$result->expiration_date	, "/",null, null, true);
+                            $cookieController->updateLoggedInToDb($user->id,1);
+                        }
+
+
+                    }
                     return 'Welcome';
                 }
                 else

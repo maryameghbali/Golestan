@@ -31,6 +31,7 @@ if(isset($_POST) & !empty($_POST)) {
             {
                 header('Location: '.$productManage);
             }
+            header("Refresh:0");
 
         } else {
             $mes = "Validation failed";

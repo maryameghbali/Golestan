@@ -79,7 +79,6 @@ if(isset($_POST['deleteItem'])){
                             <th scope="col"></th>
                             <th scope="col">product</th>
                             <th scope="col">Stock</th>
-                            <th scope="col">Description</th>
                             <th scope="col">Price</th>
                             <th scope="col">Action</th>
                         </tr>
@@ -97,7 +96,6 @@ if(isset($_POST['deleteItem'])){
                                     </th>
                                     <td><?php echo $row[1];?></td>
                                     <td><?php echo $row[3];?></td>
-                                    <td>Euro <?php echo $row[2];?></td>
                                     <td>Euro <?php echo $row[4];?></td>
                                     <td><button type="submit" class="btn btn-danger" name="deleteItem" value="<?php echo $row[0];?>">Delete</button></td>
                                 </tr>

@@ -1,6 +1,9 @@
 <?php
-session_start();
+
+
 $countBasket = 0;
+$UserName ="" ;
+
 
 if(isset($_POST) && isset($_COOKIE['UserBasket'])) {
     $cookie = $_COOKIE['UserBasket'];
@@ -11,8 +14,16 @@ if(isset($_POST) && isset($_COOKIE['UserBasket'])) {
 
 if (isset($_POST['logout']))
 {
+    $cookieController = new CookieController();
+    $cookieController->updateLoggedInToDb($_SESSION['userID'],0);
     unset($_SESSION['userID']);
+    unset($_SESSION['UserName']);
     unset($_SESSION['token']);
+
+}
+if(isset($_SESSION['UserName'])) {
+
+    $UserName = 'Welcome  '. $_SESSION['UserName'];
 }
 ?>
 
@@ -49,6 +60,13 @@ if (isset($_POST['logout']))
                 <div class="col-md-6 text-right">
                     <div class="top_nav_right">
                         <ul class="top_nav_menu">
+                            <li class="account">
+                                <a href="#">
+                                        <?php echo  $UserName ?>
+
+                                </a>
+
+                            </li>
                             <li class="account">
                                 <a href="#">
                                     My Account
