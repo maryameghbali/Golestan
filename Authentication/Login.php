@@ -36,7 +36,9 @@ if(isset($_POST) & !empty($_POST)) {
             {
                 header('Location: '.$viewOrders);
             }
-            header("Refresh:0");
+            else {
+                header('Location:/Golestan/Index.php');
+            }
 
         } else {
             $mes = "Validation failed";
