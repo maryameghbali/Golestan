@@ -14,7 +14,9 @@ class UserController
     }
 
     function addNewUser($name, $address,$phone, $email, $pass){
-        $password = password_hash($pass,  PASSWORD_DEFAULT);
+        $salt = uniqid(mt_rand(), true);
+        $passSalty=$pass.$salt;
+        $password = password_hash($passSalty,  PASSWORD_DEFAULT);
         try {
             $link =DBConfig::getLink();
             // Prepare an SQL statement for execution
@@ -23,8 +25,10 @@ class UserController
                     address,
                     phone,
                     email,
-                    password
+                    password,
+                    salt
                 ) VALUES (
+                    ?,
                     ?,
                     ?,
                     ?,
@@ -33,7 +37,7 @@ class UserController
                 );
             ');
             // Bind variables to a prepared statement as parameters
-            $statement->bind_param('sssss', $name, $address, $phone, $email, $password);
+            $statement->bind_param('ssssss', $name, $address, $phone, $email, $password, $salt);
 
             // Execute a prepared Query
             $statement->execute();
@@ -67,9 +71,11 @@ class UserController
 
             while ($user = $result->fetch_object()) {
                 // Output User info
+                $salt = $user->salt;
                 $password=$user->password;
+                $preparedPass = $pass.$salt;
 
-                if(password_verify($pass, $password)){
+                if(password_verify($preparedPass, $password)){
                     $this->AssignSession($user->id,$user->name);
                     $cookieController = new CookieController();
                     if (!empty($_COOKIE['UserBasket']))
@@ -88,11 +94,11 @@ class UserController
 
 
                     }
-                    return 'Welcome';
+                    return true;
                 }
                 else
                 {
-                    return "Email or password is wrong";
+                    return false;
 
                 }
             }

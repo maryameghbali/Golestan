@@ -30,9 +30,6 @@ include './common/header.php';
         <div class="row align-items-center fill_height">
             <div class="col">
                 <div class="main_slider_content">
-
-                    <h1>Get up to 30% Off New Arrivals</h1>
-                    <div class="red_button shop_now_button"><a href="#"><?php echo $msg;?></a></div>
                 </div>
             </div>
         </div>

@@ -21,25 +21,27 @@ if(isset($_POST) & !empty($_POST)) {
     {
         if (hash_equals($token, $_POST['token'])) {
             $controller = new UserController();
-            $mes = $controller->loginUser($_POST['inputEmail'],$_POST['inputPassword']);
+            $result = $controller->loginUser($_POST['inputEmail'],$_POST['inputPassword']);
             $source = $_GET['from'];
-
-            if($source == "'checkout'")
-            {
-                header('Location: '.$basketPage);
+            if($result) {
+                if($source == "'checkout'") 
+                {
+                    header('Location: '.$basketPage);
+                }
+                elseif ($source == "'addProduct'")
+                {
+                    header('Location: '.$productManage);
+                }
+                elseif ($source == "'orders'")
+                {
+                    header('Location: '.$viewOrders);
+                }
+                else {
+                    header('Location:/Golestan/Index.php');
+                }
+            } else {
+                $mes = "Email or Password is wrong.";
             }
-            elseif ($source == "'addProduct'")
-            {
-                header('Location: '.$productManage);
-            }
-            elseif ($source == "'orders'")
-            {
-                header('Location: '.$viewOrders);
-            }
-            else {
-                header('Location:/Golestan/Index.php');
-            }
-
         } else {
             $mes = "Validation failed";
         }
