@@ -160,4 +160,37 @@ class UserController
         }
     }
 
+    public function checkPassword($pwd) {
+        if(preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $pwd)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    
+    function isEmailAvailable($email) {
+        try {
+            $link = DBConfig::getLink();
+            $statement = $link->prepare('SELECT * FROM shop_user WHERE email = ?');
+            $statement->bind_param('s',$email);
+            $statement->execute();
+            $result = $statement->get_result();
+            while ($user = $result->fetch_object()) {
+                if($user->email){
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch(mysqli_sql_exception $e){
+            echo $e->getMessage(), PHP_EOL;
+            exit();
+        }
+        finally
+        {
+            $link->close();
+        }
+    }
+
 }
