@@ -4,10 +4,14 @@
 include ("DBConfig.php");
 include ('./Shop/ProductController.php');
 include ('./Shop/CookieController.php');
+include ('./common/General.php');
 session_start();
 $msg = "";
 $controller = new ProductController();
 $cookieController = new CookieController();
+
+SessionManage();
+
 if(isset($_POST)) {
     if(isset($_POST['addToCart'])) {
         $productId= $_POST['addToCart'];

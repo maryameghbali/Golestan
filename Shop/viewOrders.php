@@ -1,8 +1,10 @@
 <?php
 $location = "/Golestan/Authentication/Login.php?from='orders'";
 
-
 session_start();
+include ('../common/General.php');
+SessionManage();
+
 if(isset($_POST)) {
     if(!(isset($_SESSION['userID']) && isset($_SESSION['token']))) {
         header('Location: '.$location);

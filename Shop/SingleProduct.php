@@ -5,6 +5,8 @@ include "../DBConfig.php";
 include ('ProductController.php');
 include ('CookieController.php');
 session_start();
+
+SessionManage();
 $msg = "";
 $productController = new ProductController();
 $cookieController = new CookieController();

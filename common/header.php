@@ -14,9 +14,8 @@ if (isset($_POST['logout']))
     include_once('../Shop/CookieController.php');
     $cookieController = new CookieController();
     $cookieController->updateLoggedInToDb($_SESSION['userID'],0);
-    unset($_SESSION['userID']);
-    unset($_SESSION['UserName']);
-    unset($_SESSION['token']);
+    session_unset();
+    session_destroy();
 
 }
 if(isset($_SESSION['UserName'])) {

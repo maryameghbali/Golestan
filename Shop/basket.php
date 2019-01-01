@@ -2,6 +2,8 @@
 $checkout = '/Golestan/Shop/checkout.php';
 $login = "/Golestan/Authentication/Login.php?from='checkout'";
 session_start();
+include ('../common/General.php');
+SessionManage();
 
 if(isset($_POST['checkout'])) {
     if(isset($_SESSION['userID']) && isset($_SESSION['token'])) {

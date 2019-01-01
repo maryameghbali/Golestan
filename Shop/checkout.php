@@ -5,6 +5,9 @@ include "../DBConfig.php";
 include '../Authentication/UserController.php';
 include ('OrderController.php');
 session_start();
+include ('../common/General.php');
+SessionManage();
+
 $rangeValue = 0;
 $cookieController = new CookieController();
 $orderController = new OrderController();
