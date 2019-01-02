@@ -18,7 +18,7 @@ include '../common/header.php';
                         <p>(149) 600-4444</p>
                         <p>info@golestan.com</p>
                     </div>
-                    
+
                     <div>
                         <p>Open hours: 8.00-18.00 Mon-Fri</p>
                         <p>Sunday: Closed</p>
