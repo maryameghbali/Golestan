@@ -39,6 +39,10 @@ if(isset($_SESSION['UserName'])) {
     <link rel="stylesheet" type="text/css" href="/Golestan/assets/styles/responsive.css">
     <link rel="stylesheet" type="text/css" href="/Golestan/assets/styles/single_styles.css">
     <link rel="stylesheet" type="text/css" href="/Golestan/assets/styles/single_responsive.css">
+    <link rel="stylesheet" type="text/css" href="/Golestan/assets/styles/contact_styles.css">
+    <link rel="stylesheet" type="text/css" href="/Golestan/assets/styles/contact_responsive.css">
+    <link rel="stylesheet" href="/Golestan/assets/plugins/themify-icons/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="/Golestan/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
 </head>
 
 
@@ -108,7 +112,7 @@ if(isset($_SESSION['UserName'])) {
                             <li><a href="/Golestan/Index.php">home</a></li>
                             <li><a href="/Golestan/Shop/ProductManage.php">Sell Products</a></li>
 
-                            <li><a href="contact.html">contact</a></li>
+                            <li><a href="/Golestan/common/Contact.php">contact</a></li>
                         </ul>
                         <ul class="navbar_user">
                             <li class="checkout">
