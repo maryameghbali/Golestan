@@ -196,7 +196,6 @@ include '../common/header.php';
             elseif ($rangeValue == 2) {
                 ?>
                 <div class="card col-sm-12">
-                    <form method="post">
                         <div class="card-body">
                             <h5 class="card-title">Purchase History</h5>
                             <p class="card-text">Thank you for your purchase, see you soon.</p>
@@ -244,7 +243,8 @@ include '../common/header.php';
                             </div>
 
                         </div>
-                        <button type="submit" name="finalize" class="btn btn-primary float-sm-right">Return To shop</button>
+                    <form method="post">
+                    <button type="submit" name="finalize" class="btn btn-primary float-sm-right">Return To shop</button>
                     </form>
                 </div>
                 <?php
