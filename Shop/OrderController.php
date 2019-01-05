@@ -16,7 +16,9 @@ class OrderController
      *
      * add order to table order by checking that item is available in last
      * step and if yes return the products that added to the order table
-     * */
+     *
+     * @return array
+     */
     function addNewOrder() {
         try {
             $orderStatus = array();
@@ -73,8 +75,12 @@ class OrderController
      * Check product is available
      *
      * Before add the product to order table we check the stock
-     * */
-    function checkProductAvailable($id_item,$quantity) {
+     *
+     * @param $id_item
+     * @param $quantity
+     * @return bool
+     */
+    function checkProductAvailable($id_item, $quantity) {
         try {
             // Open a new connection to the MySQL server
             $mysqli = DBConfig::getLink();
@@ -120,7 +126,10 @@ class OrderController
      * Get all customer order
      *
      * In order view page, customer can see all the orders
-     * */
+     *
+     * @param $userId
+     * @return bool|mysqli_result
+     */
     function getAllCustomerOrder($userId) {
         try {
             // Open a new connection to the MySQL server
@@ -161,7 +170,10 @@ class OrderController
      * Update Item stock
      *
      * after order in placed need to update the stock in item table
-     * */
+     *
+     * @param $id
+     * @param $quantity
+     */
     function updateItemStock($id, $quantity) {
         try {
 
@@ -195,7 +207,10 @@ class OrderController
      *
      * in last step on checkout we get the all orders that successfully added to
      * order table
-     * */
+     *
+     * @param $id
+     * @return bool|mysqli_result
+     */
     function getOrderById($id) {
         try {
             // Open a new connection to the MySQL server

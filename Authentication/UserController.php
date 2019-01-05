@@ -18,8 +18,13 @@ class UserController
      *
      * User in registration section use this method to create new user by secure hash password
      *
-     * */
-    function addNewUser($name, $address,$phone, $email, $pass){
+     * @param $name
+     * @param $address
+     * @param $phone
+     * @param $email
+     * @param $pass
+     */
+    function addNewUser($name, $address, $phone, $email, $pass){
         $salt = uniqid(mt_rand(), true);
         $passSalty=$pass.$salt;
         $password = password_hash($passSalty,  PASSWORD_DEFAULT);
@@ -73,9 +78,11 @@ class UserController
      * Login user
      *
      * Check the email and password
-     * @param: email
-     * @param: password
-     * */
+     *
+     * @param $email
+     * @param $pass
+     * @return bool
+     */
     function loginUser($email, $pass){
         try {
             $link = DBConfig::getLink();
@@ -134,7 +141,10 @@ class UserController
      * Get user by ID
      *
      * get user data by passing the user id
-     * */
+     *
+     * @param $id
+     * @return object|stdClass
+     */
     function getUserById($id) {
         try {
             $link = DBConfig::getLink();
@@ -159,7 +169,10 @@ class UserController
      * Update User address
      *
      * before checkout the product user can change the address
-     * */
+     *
+     * @param $id
+     * @param $newAddress
+     */
     function updateUserAddress($id, $newAddress){
         try {
             // Open a new connection to the MySQL server
@@ -196,7 +209,10 @@ class UserController
      * Check password
      *
      * in registration password should have enough complexity by having a different character
-     * */
+     *
+     * @param $pwd
+     * @return bool
+     */
     public function checkPassword($pwd) {
         if(preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $pwd)){
             return true;
@@ -210,7 +226,10 @@ class UserController
      *
      * Check the email in registration that if is already exist stop the
      * registration process
-     * */
+     *
+     * @param $email
+     * @return bool
+     */
     function isEmailAvailable($email) {
         try {
             $link = DBConfig::getLink();

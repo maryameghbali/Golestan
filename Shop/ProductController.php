@@ -13,8 +13,7 @@ class ProductController
     /*
      * Add new product
      * each used sell their own item into the shop
-     * */
-    /**
+     *
      * @param $name
      * @param $des
      * @param $stock
@@ -72,7 +71,9 @@ class ProductController
      *
      * Index page show all the products that added by
      * each user
-     * */
+     *
+     * @return bool|mysqli_result
+     */
     function getAllProducts(){
         try {
 
@@ -108,7 +109,10 @@ class ProductController
      * Get all user Products
      *
      * Each user can get their own products
-     * */
+     *
+     * @param $userId
+     * @return bool|mysqli_result
+     */
     function getAllUserProducts($userId){
 
         try {
@@ -145,7 +149,10 @@ class ProductController
      * Delete Item
      *
      * Just user that added the item can delete it as well
-     * */
+     *
+     * @param $userId
+     * @param $itemId
+     */
     function deleteItem($userId, $itemId) {
         try {
             // Open a new connection to the MySQL server
@@ -177,7 +184,10 @@ class ProductController
      * Get Product By productID
      *
      * find the product in database by passing the product id
-     * */
+     *
+     * @param $id
+     * @return bool|mysqli_result
+     */
     function getProductById($id){
 
         try {
