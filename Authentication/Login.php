@@ -16,36 +16,69 @@ if (empty($_SESSION['key'])) {
 $token = hash_hmac('sha256',"mySecretPath: index.php", $_SESSION['key']);
 $_SESSION['token'] = $token;
 if(isset($_POST) & !empty($_POST)) {
+    function post_captcha($user_response) {
+        $fields_string = '';
+        $fields = array(
+            'secret' => '6Ld3JocUAAAAANZPcv68OByGV_-3KOct3U3bsX0w',
+            'response' => $user_response
+        );
+        foreach($fields as $key=>$value)
+        $fields_string .= $key . '=' . $value . '&';
+        $fields_string = rtrim($fields_string, '&');
 
-    if (isset($_POST['login']))
-    {
-        if (hash_equals($token, $_POST['token'])) {
-            $controller = new UserController();
-            $result = $controller->loginUser($_POST['inputEmail'],$_POST['inputPassword']);
-            $source = $_GET['from'];
-            if($result) {
-                if($source == "'checkout'") 
-                {
-                    header('Location: '.$basketPage);
-                }
-                elseif ($source == "'addProduct'")
-                {
-                    header('Location: '.$productManage);
-                }
-                elseif ($source == "'orders'")
-                {
-                    header('Location: '.$viewOrders);
-                }
-                else {
-                    header('Location:/Golestan/Index.php');
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://www.google.com/recaptcha/api/siteverify');
+        curl_setopt($ch, CURLOPT_POST, count($fields));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, True);
+
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        return json_decode($result, true);
+    }
+
+    // Call the function post_captcha
+    $res = post_captcha($_POST['g-recaptcha-response']);
+
+    if (!$res['success']) {
+        // What happens when the CAPTCHA wasn't checked
+        $mes = "Please make sure you check the security CAPTCHA box.";
+    } else {
+        // If CAPTCHA is successfully completed...
+
+        // Paste mail function or whatever else you want to happen here!
+        echo '<br><p>CAPTCHA was completed successfully!</p><br>';
+
+        if (isset($_POST['login']))
+        {
+            if (hash_equals($token, $_POST['token'])) {
+                $controller = new UserController();
+                $result = $controller->loginUser($_POST['inputEmail'],$_POST['inputPassword']);
+                $source = $_GET['from'];
+                if($result) {
+                    if($source == "'checkout'") 
+                    {
+                        header('Location: '.$basketPage);
+                    }
+                    elseif ($source == "'addProduct'")
+                    {
+                        header('Location: '.$productManage);
+                    }
+                    elseif ($source == "'orders'")
+                    {
+                        header('Location: '.$viewOrders);
+                    }
+                    else {
+                        header('Location:/Golestan/Index.php');
+                    }
+                } else {
+                    $mes = "Email or Password is wrong.";
                 }
             } else {
-                $mes = "Email or Password is wrong.";
+                $mes = "Validation failed";
             }
-        } else {
-            $mes = "Validation failed";
         }
-
     }
 
 }
@@ -73,8 +106,8 @@ include '../common/header.php';
                             <label for="inputPassword">Password</label>
                             <input type="password" class="form-control" name="inputPassword" placeholder="Password">
                         </div>
-                        <button type="submit" class="btn btn-primary" name="login">Submit</button>
                         <div class="g-recaptcha" data-sitekey="6Ld3JocUAAAAAATD1rUCNBeXlidj_WOox9MBT_Zn"></div>
+                        <button type="submit" class="btn btn-primary" name="login">Submit</button>
                         </form>
                         <a href="Registration.php">Do not have an account</a>
                     </div>
