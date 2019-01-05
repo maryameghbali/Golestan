@@ -21,7 +21,7 @@ if(isset($_POST)) {
 }
 
 $ShowId=$_GET['Id'];
-$result = $productController->getProdcutById($ShowId);
+$result = $productController->getProductById($ShowId);
 $row=mysqli_fetch_row($result);
 
 include  "../common/header.php";
@@ -65,6 +65,7 @@ include  "../common/header.php";
                 </div>
 
                 <div class="product_price">EUR <?php echo $row[4]; ?></div>
+                <p>In stock: <?php echo $row[3];?></p>
                 <ul class="star_rating">
                     <li><i class="fa fa-star" aria-hidden="true"></i></li>
                     <li><i class="fa fa-star" aria-hidden="true"></i></li>
@@ -81,6 +82,7 @@ include  "../common/header.php";
                     </ul>
                 </div>
                 <form method="post">
+                    <?php if($row[3] > 0) {?>
                     <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
                         <span>Quantity:</span>
                         <div class="quantity_selector">
@@ -97,6 +99,7 @@ include  "../common/header.php";
                         <div><button type="submit" name="addItem" class="btn btn-danger red_button" value="<?php echo $row[0]?>">Add to cart</button></div>
                         <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
                     </div>
+                    <?php }?>
                 </form>
             </div>
         </div>

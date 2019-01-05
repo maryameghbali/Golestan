@@ -10,6 +10,17 @@ class ProductController
         self::ProductController();
     }
 
+    /*
+     * Add new product
+     * each used sell their own item into the shop
+     * */
+    /**
+     * @param $name
+     * @param $des
+     * @param $stock
+     * @param $price
+     * @param $userId
+     */
     function addNewProduct($name, $des, $stock, $price, $userId) {
         try {
             // Open a new connection to the MySQL server
@@ -55,15 +66,50 @@ class ProductController
         }
     }
 
-    function getAllProduction(){
-        $sql = "select *  from shop_items";
-        $link = DBConfig::getLink();
-        $result=mysqli_query($link,$sql);
-        $link->close();
-        return $result;
+
+    /*
+     * Get all products
+     *
+     * Index page show all the products that added by
+     * each user
+     * */
+    function getAllProducts(){
+        try {
+
+            // Open a new connection to the MySQL server
+            $mysqli = DBConfig::getLink();
+
+            // Prepare an SQL statement for execution
+            $statement = $mysqli->prepare('SELECT * FROM shop_items');
+
+            // Execute a prepared query
+            $statement->execute();
+
+            // Gets a result set from a prepared statement
+            $result = $statement->get_result();
+
+            // Close a prepared statement
+            $statement->close();
+
+            // Close database connection
+            $mysqli->close();
+
+            // Fetch object from row/entry in result set
+            return $result;
+        } catch (mysqli_sql_exception $e) {
+            // Output error and exit upon exception
+            echo $e->getMessage();
+            exit;
+        }
     }
 
-    function getAllUserProduction($userId){
+
+    /*
+     * Get all user Products
+     *
+     * Each user can get their own products
+     * */
+    function getAllUserProducts($userId){
 
         try {
             // Open a new connection to the MySQL server
@@ -94,6 +140,12 @@ class ProductController
         }
     }
 
+
+    /*
+     * Delete Item
+     *
+     * Just user that added the item can delete it as well
+     * */
     function deleteItem($userId, $itemId) {
         try {
             // Open a new connection to the MySQL server
@@ -120,7 +172,13 @@ class ProductController
         }
     }
 
-    function getProdcutById($id){
+
+    /*
+     * Get Product By productID
+     *
+     * find the product in database by passing the product id
+     * */
+    function getProductById($id){
 
         try {
             // Open a new connection to the MySQL server

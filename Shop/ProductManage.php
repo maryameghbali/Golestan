@@ -98,7 +98,7 @@ if(isset($_POST['deleteItem'])){
                         </thead>
                         <tbody>
                         <?php
-                        $result = $controller->getAllUserProduction($userId);
+                        $result = $controller->getAllUserProducts($userId);
                         while ($row=mysqli_fetch_array($result))
                         {
                             ?>

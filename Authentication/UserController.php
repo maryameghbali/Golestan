@@ -13,6 +13,12 @@ class UserController
         self::UserController();
     }
 
+    /*
+     * Add new User
+     *
+     * User in registration section use this method to create new user by secure hash password
+     *
+     * */
     function addNewUser($name, $address,$phone, $email, $pass){
         $salt = uniqid(mt_rand(), true);
         $passSalty=$pass.$salt;
@@ -53,6 +59,8 @@ class UserController
             exit;
         }
     }
+
+
     function AssignSession($id,$name){
         $_SESSION['userID']= $id;
         $_SESSION['UserName']= $name;
@@ -61,6 +69,13 @@ class UserController
         $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);
     }
 
+    /*
+     * Login user
+     *
+     * Check the email and password
+     * @param: email
+     * @param: password
+     * */
     function loginUser($email, $pass){
         try {
             $link = DBConfig::getLink();
@@ -115,6 +130,11 @@ class UserController
 
     }
 
+    /*
+     * Get user by ID
+     *
+     * get user data by passing the user id
+     * */
     function getUserById($id) {
         try {
             $link = DBConfig::getLink();
@@ -135,6 +155,11 @@ class UserController
         }
     }
 
+    /*
+     * Update User address
+     *
+     * before checkout the product user can change the address
+     * */
     function updateUserAddress($id, $newAddress){
         try {
             // Open a new connection to the MySQL server
@@ -166,6 +191,12 @@ class UserController
         }
     }
 
+
+    /*
+     * Check password
+     *
+     * in registration password should have enough complexity by having a different character
+     * */
     public function checkPassword($pwd) {
         if(preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $pwd)){
             return true;
@@ -174,7 +205,12 @@ class UserController
         }
     }
 
-    
+    /*
+     * Is Email Available
+     *
+     * Check the email in registration that if is already exist stop the
+     * registration process
+     * */
     function isEmailAvailable($email) {
         try {
             $link = DBConfig::getLink();

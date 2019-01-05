@@ -11,6 +11,8 @@ SessionManage();
 $rangeValue = 0;
 $cookieController = new CookieController();
 $orderController = new OrderController();
+$orderStatus = array();
+$totalPurchased = 0;
 
 if(isset($_POST)) {
 
@@ -23,8 +25,6 @@ if(isset($_POST)) {
     }
 
     if(isset($_POST['finalize'])){
-        $orderController->addNewOrder();
-        $cookieController->deleteCookies();
         header('Location: '.$index);
     }
 
@@ -43,6 +43,8 @@ if(isset($_POST)) {
         $rangeValue = 0;
     }
     if(isset($_POST['btnCheckout'])){
+        $orderStatus = $orderController->addNewOrder();
+        $cookieController->deleteCookies();
         $rangeValue = 2;
     }
 }
@@ -198,6 +200,49 @@ include '../common/header.php';
                         <div class="card-body">
                             <h5 class="card-title">Purchase History</h5>
                             <p class="card-text">Thank you for your purchase, see you soon.</p>
+                            <div class="container">
+                                <div class="row align-items-center" style="margin-top: 5px;">
+                                    <div class="col-sm-12">
+                                        <form method="post">
+                                            <table class="table">
+                                                <thead class="thead-light">
+                                                <tr>
+                                                    <th scope="col"></th>
+                                                    <th scope="col">product</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col">Quantity</th>
+                                                    <th scope="col">Order Date</th>
+                                                </thead>
+                                                <tbody>
+                                                <?php
+                                                foreach ($orderStatus as $order) {
+                                                    $rows = $orderController->getOrderById($order);
+                                                    while ($row=mysqli_fetch_array($rows))
+                                                    {
+                                                        ?>
+                                                        <tr>
+                                                            <th scope="row" >
+                                                                <img style="height: 5rem;"
+                                                                     src="/Golestan/assets/images/ProductImages/shop_items<?php echo $row[3]; ?>.jpg" >
+                                                            </th>
+                                                            <td><?php echo htmlspecialchars($row[8], ENT_QUOTES, 'UTF-8');?></td>
+                                                            <td>Euro <?php echo $row[6];?></td>
+
+                                                            <td><?php echo htmlspecialchars($row[1], ENT_QUOTES, 'UTF-8');?></td>
+                                                            <td><?php echo htmlspecialchars($row[5], ENT_QUOTES, 'UTF-8');?></td>
+                                                        </tr>
+                                                        <?php
+                                                        $totalPurchased+=$row[6];
+                                                    }
+                                                }
+                                                ?>
+                                            </table>
+                                            <p class="card-text text-success">Total Payed: <?php echo $totalPurchased;?> EURO</p>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                         <button type="submit" name="finalize" class="btn btn-primary float-sm-right">Return To shop</button>
                     </form>

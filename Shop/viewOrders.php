@@ -46,7 +46,7 @@ echo $userId;
                                          src="/Golestan/assets/images/ProductImages/shop_items<?php echo $row[3]; ?>.jpg" >
                                 </th>
                                 <td><?php echo htmlspecialchars($row[8], ENT_QUOTES, 'UTF-8');?></td>
-                                <td>Euro <?php echo $row[2];?></td>
+                                <td>Euro <?php echo $row[6];?></td>
 
                                 <td><?php echo htmlspecialchars($row[1], ENT_QUOTES, 'UTF-8');?></td>
                                 <td><?php echo htmlspecialchars($row[5], ENT_QUOTES, 'UTF-8');?></td>
