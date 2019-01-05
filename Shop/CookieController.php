@@ -9,6 +9,14 @@ class CookieController
         self::CookieController();
     }
 
+    /*
+     * Add to Cookie
+     *
+     * Add user selected items for order to cookie
+     *
+     * @param $cookie_value
+     * @param $quantity
+     */
     public function addToCookie($cookie_value, $quantity){
         if (!empty($_COOKIE['UserBasket'])) {
             $cookie = $_COOKIE['UserBasket'];
@@ -25,6 +33,13 @@ class CookieController
         }
     }
 
+    /*
+         * Delete Cookie
+         *
+         * Delete user selected item from cookie
+         *
+         * @param $cookie_value
+         */
     public function deleteCookie($cookie_value) {
         
         $newArray = [];
@@ -50,6 +65,13 @@ class CookieController
         setcookie("UserBasket", "", time()-(3600*24*7), "/",null, null, true);
     }
 
+    /*
+     *  Add Cookie To Database
+     *
+     * Add Cookie items for order to database after user logged in
+     *
+     * @param $UId
+     */
     function AddCookieToDB($UId){
 
         $cookie = $_COOKIE['UserBasket'];
@@ -89,6 +111,14 @@ class CookieController
 
     }
 
+    /*
+   *  update Cookie To database
+   *
+   * Update database for cookie table when cookie changed by user
+   *
+   * @param $userId
+   * @param $value
+   */
     public function updateCookieToDb($userId, $value) {
         try {
             // Open a new connection to the MySQL server
@@ -115,6 +145,15 @@ class CookieController
             exit;
         }
     }
+
+    /*
+    *  update LoggedIn To database
+    *
+    * Update database for LoggedIn column in cookie table when user logged in or logged out
+    *
+    * @param $userId
+    * @param $LoggedIn
+    */
     public function updateLoggedInToDb($userId,$LoggedIn) {
         try {
             // Open a new connection to the MySQL server
@@ -141,6 +180,15 @@ class CookieController
             exit;
         }
     }
+
+
+    /*
+    * get Cookie By UserId
+    *
+    * Get the cookie value for specific user from database
+    *
+    * @param $userId
+    */
     function getCookieByUserId($userId){
         try {
             $link = DBConfig::getLink();
@@ -160,18 +208,5 @@ class CookieController
             $link->close();
         }
     }
-    function getAllCookies($userId){
-        try{
-            $sql = "SELECT shop_items.id, shop_items.title, shop_items.price, shop_basket.quantity FROM shop_basket INNER JOIN shop_items ON shop_items.id = shop_basket.id_item WHERE shop_basket.id_coockie ='$cookie'";
-            $link = DBConfig::getLink();
-            $response = mysqli_query($link,$sql);
-            $link->close();
-            return $response;
-        }
-        catch (mysqli_sql_exception $e) {
-            // Output error and exit upon exception
-            echo $e->getMessage();
-            exit;
-        }
-    }
+
 }

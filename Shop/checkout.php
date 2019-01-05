@@ -6,6 +6,8 @@ include '../Authentication/UserController.php';
 include ('OrderController.php');
 session_start();
 include ('../common/General.php');
+
+// Check for validation of user sessions
 SessionManage();
 
 $rangeValue = 0;

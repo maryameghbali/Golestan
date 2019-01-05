@@ -6,6 +6,7 @@ include ('ProductController.php');
 include ('CookieController.php');
 session_start();
 
+// Check for validation of user sessions
 SessionManage();
 $msg = "";
 $productController = new ProductController();

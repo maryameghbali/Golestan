@@ -3,6 +3,8 @@ $location = "/Golestan/Authentication/Login.php?from='orders'";
 
 session_start();
 include ('../common/General.php');
+
+// Check for validation of user sessions
 SessionManage();
 
 if(isset($_POST)) {

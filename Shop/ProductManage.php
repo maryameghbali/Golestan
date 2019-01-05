@@ -3,6 +3,8 @@ $loginPage = "/Golestan/Authentication/Login.php?from='addProduct'";
 session_start();
 
 include ('../common/General.php');
+
+// Check for validation of user sessions
 SessionManage();
 
 $mes ="";

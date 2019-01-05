@@ -65,13 +65,17 @@ class UserController
         }
     }
 
-
+    /*
+    * Assign Session
+    *
+    * Assign the userid and username to session when user logged in
+    *
+    * @param $id
+    * @param $name
+    */
     function AssignSession($id,$name){
         $_SESSION['userID']= $id;
         $_SESSION['UserName']= $name;
-        $_SESSION['start'] = time(); // Taking now logged in time.
-        // Ending a session in 30 minutes from the starting time.
-        $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);
     }
 
     /*

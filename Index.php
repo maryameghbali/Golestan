@@ -10,8 +10,10 @@ $msg = "";
 $controller = new ProductController();
 $cookieController = new CookieController();
 
+// Check for validation of user sessions
 SessionManage();
 
+// Add selected item by user to cookie
 if(isset($_POST)) {
     if(isset($_POST['addToCart'])) {
         $productId= $_POST['addToCart'];

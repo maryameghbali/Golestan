@@ -1,6 +1,14 @@
 
 <?php
 
+/*
+   * Get Max Id
+   *
+   * userd for every function that needs last Id of specific table like using last id for picture names in products
+   *
+   * @param $link
+   * @param $table
+   */
 function GetMaxId($link,$table)
 {
 
@@ -16,15 +24,22 @@ function GetMaxId($link,$table)
 
     return $MaxId;
 }
+
+/*
+   * SessionManage
+   *
+   * used for check and control the session time for users
+   *
+   */
 function SessionManage()
 {
 
-    //Expire the session if user is inactive for 30
-//minutes or more.
-    $expireAfter = 10;
+    //Expire the session if user is inactive for 15
+    //minutes or more.
+    $expireAfter = 15;
 
-//Check to see if our "last action" session
-//variable has been set.
+    //Check to see if our "last action" session
+    //variable has been set.
     if(isset($_SESSION['last_action'])){
 
         //Figure out how many seconds have passed
@@ -45,8 +60,8 @@ function SessionManage()
 
     }
 
-//Assign the current timestamp as the user's
-//latest activity
+    //Assign the current timestamp as the user's
+    //latest activity
     $_SESSION['last_action'] = time();
 
 }

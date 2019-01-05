@@ -2,22 +2,26 @@
 $countBasket = 0;
 $UserName ="";
 
+// Show the count of basket items selected by user form cookie
 if(isset($_POST) && isset($_COOKIE['UserBasket'])) {
     $cookie = $_COOKIE['UserBasket'];
     $cardArray = json_decode($cookie, true);
     $countBasket =  count($cardArray);
 }
 
-
+// Check if user clicks for logout, then destroy all user sessions
 if (isset($_POST['logout']))
 {
     include_once('../Shop/CookieController.php');
     $cookieController = new CookieController();
+    // Set column Loggedin  equal 0 in Cookie table in database when user loged out
     $cookieController->updateLoggedInToDb($_SESSION['userID'],0);
     session_unset();
     session_destroy();
 
 }
+
+// Show the name of user when user loged in to the system
 if(isset($_SESSION['UserName'])) {
 
     $UserName = 'Welcome  '. $_SESSION['UserName'];
