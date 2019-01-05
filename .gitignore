@@ -6,3 +6,4 @@ vcs.xml
 .idea/dataSources
 dataSources.xml
 dataSources.local.xml
+*.log

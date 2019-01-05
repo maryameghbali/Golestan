@@ -47,6 +47,7 @@ if(isset($_SESSION['UserName'])) {
     <link rel="stylesheet" type="text/css" href="/Golestan/assets/styles/contact_responsive.css">
     <link rel="stylesheet" href="/Golestan/assets/plugins/themify-icons/themify-icons.css">
     <link rel="stylesheet" type="text/css" href="/Golestan/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 

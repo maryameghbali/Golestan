@@ -74,7 +74,7 @@ include '../common/header.php';
                             <input type="password" class="form-control" name="inputPassword" placeholder="Password">
                         </div>
                         <button type="submit" class="btn btn-primary" name="login">Submit</button>
-
+                        <div class="g-recaptcha" data-sitekey="6Ld3JocUAAAAAATD1rUCNBeXlidj_WOox9MBT_Zn"></div>
                         </form>
                         <a href="Registration.php">Do not have an account</a>
                     </div>
