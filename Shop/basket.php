@@ -70,7 +70,7 @@ include '../common/header.php';
                             foreach($cardArray as $products){
                                 foreach($products as $productId => $quantity)
                                 {
-                                    $rows = $productController->getProdcutById($productId);
+                                    $rows = $productController->getProductById($productId);
                                     while ($row=mysqli_fetch_array($rows))
                                     {
                                     $totalPrice += $row[4] * $quantity;
@@ -83,14 +83,7 @@ include '../common/header.php';
                                             </th>
                                             <td><?php echo htmlspecialchars($row[1], ENT_QUOTES, 'UTF-8');?></td>
                                             <td>Euro <?php echo $row[4];?></td>
-                                            <td><input onchange="updateQuantity(<?php echo $productId?>, value)"
-                                                       type="number"
-                                                       max="<?php echo $row[3]?>"
-                                                       min="1"
-                                                       value="<?php echo $quantity;?>"
-                                                       style="width: 50px;"
-                                                >
-                                            </td>
+                                            <td><?php echo $quantity;?></td>
                                             <td><button type="submit" name="deleteItem" class="btn btn-danger"
                                                         value="<?php echo $row[0];?>">Delete</button></td>
                                         </tr>
@@ -112,17 +105,6 @@ include '../common/header.php';
             </div>
         </div>
     </div>
-<script>
-    function updateQuantity(productId, quantity) {
-        $.ajax({url: 'basket.php',
-                data: {productId: productId, quantity:quantity},
-                type: 'post',
-                success: function (output) {
-                    console.warn(output);
-                }
-        });
-    }
-</script>
 <?php
 include '../common/footer.php';
 ?>
