@@ -18,25 +18,24 @@ include("ProductController.php");
 include("CookieController.php");
 $productController = new ProductController();
 $cookieController = new CookieController();
+$basketController = new BasketController();
+$countBasket = false;
 $itemCount = 0;
 $totalPrice = 0.0;
 
 if(isset($_POST)){
     if(isset($_POST['deleteItem'])){
         $deleteItem = $_POST['deleteItem'];
-        $msg= $cookieController->deleteCookie($deleteItem);
-        header("Refresh:0");
+        $msg= $basketController->deleteItemFromBasket($deleteItem);
+
     }
-    if(isset($_COOKIE['UserBasket']))
+    if(isset($_COOKIE['SessionId']))
     {
-        $cookie = $_COOKIE['UserBasket'];
-        $cardArray = json_decode($cookie, true);
-    }
-    if(isset($_COOKIE['UserBasket'])) {
-        $cookie = $_COOKIE['UserBasket'];
-        $cardArray = json_decode($cookie, true);
-        $countBasket =  count($cardArray);
-        if ($countBasket <= 0) {
+        $cookieValue = $_COOKIE['SessionId'];
+        $result = $basketController->getItemsFromBasket($cookieValue);
+
+        // Check if there is data enable the Checkout button
+        if ($result->num_rows === 0) {
             $isThereItem = 'disabled';
         }
         else {
@@ -65,33 +64,27 @@ include '../common/header.php';
                         </tr>
                         </thead>
                         <tbody>
-                        <?php if(isset($_COOKIE['UserBasket']))
+                        <?php if(isset($_COOKIE['SessionId']))
                         {
-                            foreach($cardArray as $products){
-                                foreach($products as $productId => $quantity)
-                                {
-                                    $rows = $productController->getProductById($productId);
-                                    while ($row=mysqli_fetch_array($rows))
-                                    {
-                                    $totalPrice += $row[4] * $quantity;
-
-                                    ?>
-                                        <tr>
-                                            <th scope="row" >
-                                                <img style="height: 5rem;"
-                                                     src="/Golestan/assets/images/ProductImages/shop_items<?php echo $row[0]; ?>.jpg" >
-                                            </th>
-                                            <td><?php echo htmlspecialchars($row[1], ENT_QUOTES, 'UTF-8');?></td>
-                                            <td>Euro <?php echo $row[4];?></td>
-                                            <td><?php echo $quantity;?></td>
-                                            <td><button type="submit" name="deleteItem" class="btn btn-danger"
-                                                        value="<?php echo $row[0];?>">Delete</button></td>
-                                        </tr>
-                                <?php
-                                        $itemCount += $quantity;
-                                    }
-                                }
+                            while ($row=mysqli_fetch_array($result))
+                            {
+                            $totalPrice += $row[13] * $row[2];
+                            ?>
+                                <tr>
+                                    <th scope="row" >
+                                        <img style="height: 5rem;"
+                                             src="/Golestan/assets/images/ProductImages/shop_items<?php echo $row[9]; ?>.jpg" >
+                                    </th>
+                                    <td><?php echo htmlspecialchars($row[10], ENT_QUOTES, 'UTF-8');?></td>
+                                    <td>Euro <?php echo $row[4];?></td>
+                                    <td><?php echo $row[2];?></td>
+                                    <td><button type="submit" name="deleteItem" class="btn btn-danger"
+                                                value="<?php echo $row[0];?>">Delete</button></td>
+                                </tr>
+                        <?php
+                                $itemCount += $row[2];
                             }
+
                         }?>
                     </table>
                 </form>
