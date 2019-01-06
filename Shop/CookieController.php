@@ -1,6 +1,6 @@
 <?php
 
-include_once ('../Shop/BasketController.php');
+include ('../Shop/BasketController.php');
 class CookieController
 {
     public function __construct()

@@ -1,6 +1,6 @@
 <?php
 include("ProductController.php");
-
+//include("BasketController.php");
 class OrderController
 {
     public function __construct()
@@ -19,24 +19,20 @@ class OrderController
      *
      * @return array
      */
-    function addNewOrder() {
+    function addNewOrder($sessionValue) {
         try {
             $orderStatus = array();
             // Open a new connection to the MySQL server
             $mysqli = DBConfig::getLink();
-            $cookie = $_COOKIE['UserBasket'];
-            $productController = new ProductController();
-            $cardArray = json_decode($cookie, true);
-
-            foreach($cardArray as $products){
-                foreach($products as $productId => $qua){
-                    $rows = $productController->getProductById($productId);
-                    while ($row=mysqli_fetch_array($rows)) {
-                        $quantity = $qua;
-                        $price = $row[4];
-                        $id_item = $productId;
-                        $id_user = $_SESSION['userID'];
-                        $total_price = $row[4] * $quantity;
+                $basketController = new BasketController();
+                $result = $basketController->getItemsFromBasket($sessionValue);
+                    while ($row=mysqli_fetch_array($result)) {
+                        $id_basket = $row[0];
+                        $quantity = $row[2];
+                        $price = $row[13];
+                        $id_item = $row[9];
+                        $id_user = $row[6];
+                        $total_price = $row[13] * $quantity;
                         $itemStatus = $this->checkProductAvailable($id_item,$quantity);
                         if($itemStatus){
                             // Prepare an SQL statement for execution
@@ -53,14 +49,15 @@ class OrderController
                             // Close a prepared statement
                             $statement->close();
 
+                            $basketController->deleteItemFromBasketById($id_basket);
+
                             // Quick & "dirty" way to fetch newly created address id
                             $orderId = $mysqli->insert_id;
                             array_push($orderStatus,$orderId);
                             // Close database connection
                         }
                     }
-                }
-            }
+
             $mysqli->close();
             return $orderStatus;
         } catch (mysqli_sql_exception $e) {

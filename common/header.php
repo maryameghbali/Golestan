@@ -2,13 +2,16 @@
 $countBasket = 0;
 $UserName ="";
 
-// Show the count of basket items selected by user form cookie
-/*if(isset($_POST) && isset($_COOKIE['UserBasket'])) {
-    $cookie = $_COOKIE['UserBasket'];
-    $cardArray = json_decode($cookie, true);
-    $countBasket =  count($cardArray);
-}
-*/
+// Show the count of basket items selected by user form basket
+//if(isset($_COOKIE['SessionId'])) {
+//    $session = $_COOKIE['SessionId'];
+//    $basketController = new BasketController();
+//    $result = $basketController->getCountOfItemsFromBasket($session);
+//    $row = $result->fetch_row();
+//    $countBasket = $row[0];
+//}
+
+
 // Check if user clicks for logout, then destroy all user sessions
 if (isset($_POST['logout']))
 {
@@ -21,7 +24,7 @@ if (isset($_POST['logout']))
 
 }
 
-// Show the name of user when user loged in to the system
+// Show the name of user when user logged in to the system
 if(isset($_SESSION['UserName'])) {
 
     $UserName = 'Welcome  '. $_SESSION['UserName'];

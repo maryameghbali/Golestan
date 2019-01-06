@@ -16,6 +16,7 @@ if(isset($_POST['checkout'])) {
 include "../DBConfig.php";
 include("ProductController.php");
 include("CookieController.php");
+
 $productController = new ProductController();
 $cookieController = new CookieController();
 $basketController = new BasketController();

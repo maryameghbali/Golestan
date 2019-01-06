@@ -1,6 +1,6 @@
 <?php
 $location = "/Golestan/Authentication/Login.php?from='checkout'";
-$index = "/Golestan/Index.php";
+$index = "/Golestan/Shop/Index.php";
 include "../DBConfig.php";
 include '../Authentication/UserController.php';
 include ('OrderController.php');
@@ -44,9 +44,9 @@ if(isset($_POST)) {
     if(isset($_POST['btnAddress'])){
         $rangeValue = 0;
     }
-    if(isset($_POST['btnCheckout'])){
-        $orderStatus = $orderController->addNewOrder();
-        $cookieController->deleteCookies();
+    if(isset($_POST['btnCheckout']) && isset($_COOKIE['SessionId'])){
+        $value = $_COOKIE['SessionId'];
+        $orderStatus = $orderController->addNewOrder($value);
         $rangeValue = 2;
     }
 }

@@ -1,7 +1,7 @@
 <?php
+
 class BasketController
 {
-
     public function __construct()
     {
 
@@ -11,6 +11,12 @@ class BasketController
         self::__construct();
     }
 
+    /**
+     * @param $id_item
+     * @param $quantity
+     * @param $id_cookie
+     * @return string
+     */
     public function addToBasket($id_item, $quantity, $id_cookie){
         try {
             $sql = "insert into shop_basket (id_item, quantity, id_coockie) values (".$id_item.",".$quantity.",".$id_cookie.")";
@@ -32,17 +38,10 @@ class BasketController
 
     }
 
-
-
-    function getBasketCount($cookieValue) {
-        if(isset($_POST) && isset($_COOKIE['UserBasket'])) {
-            $cookie = $_COOKIE['UserBasket'];
-            $cardArray = json_decode($cookie, true);
-            return count($cardArray);
-        }
-        return '0';
-    }
-
+    /**
+     * @param $cookieValue
+     * @return bool|mysqli_result
+     */
     public function getItemsFromBasket($cookieValue) {
        try {
             // Open a new connection to the MySQL server
@@ -77,13 +76,81 @@ class BasketController
         }
     }
 
+    /**
+     * @param $cookieValue
+     * @return bool|mysqli_result
+     */
+    public function getCountOfItemsFromBasket($cookieValue) {
+        try {
+            // Open a new connection to the MySQL server
+            $mysqli = DBConfig::getLink();
+
+            // Prepare an SQL statement for execution
+            $statement = $mysqli->prepare('SELECT count(*) FROM shop_basket 
+                    INNER JOIN shop_cookie ON shop_cookie.id = shop_basket.id_coockie 
+                    INNER JOIN shop_items ON shop_basket.id_item = shop_items.id 
+                    WHERE shop_cookie.cookie_value = ?');
+
+            // Binds variables to a prepared statement as parameters
+            $statement->bind_param('s', $cookieValue);
+
+            // Execute a prepared query
+            $statement->execute();
+
+            // Gets a result set from a prepared statement
+            $result = $statement->get_result();
+
+            // Close a prepared statement
+            $statement->close();
+
+            // Close database connection
+            $mysqli->close();
+
+            return $result;
+        } catch (mysqli_sql_exception $e) {
+            // Output error and exit upon exception
+            echo $e->getMessage();
+            exit;
+        }
+    }
+
+    /**
+     * @param $id
+     */
     public function deleteItemFromBasket($id) {
         try {
             // Open a new connection to the MySQL server
             $mysqli = DBConfig::getLink();
 
-            // Prepare some teat address data
-            $paymentId = 500;
+            // Prepare an SQL statement for execution
+            $statement = $mysqli->prepare('DELETE FROM shop_basket WHERE id = ?');
+
+            // Bind variables to a prepared statement as parameters
+            $statement->bind_param('i', $id);
+
+            // Execute a prepared Query
+            $statement->execute();
+
+            // Close a prepared statement
+            $statement->close();
+
+            // Close database connection
+            $mysqli->close();
+        } catch (mysqli_sql_exception $e) {
+            // Output error and exit upon exception
+            echo $e->getMessage();
+            exit;
+        }
+    }
+
+    /**
+     * @param $id
+     */
+    public function deleteItemFromBasketById($id) {
+        try {
+            // Open a new connection to the MySQL server
+            $mysqli = DBConfig::getLink();
+
 
             // Prepare an SQL statement for execution
             $statement = $mysqli->prepare('DELETE FROM shop_basket WHERE id = ?');
