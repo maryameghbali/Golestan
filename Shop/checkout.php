@@ -18,7 +18,11 @@ $totalPurchased = 0;
 
 if(isset($_POST)) {
 
-    if(!isset($_SESSION['userID']) && !isset($_SESSION['token'])) {
+    if(!(isset($_COOKIE['SessionId']))) {
+        header('Location: '.$index);
+    }
+
+    if(!isset($_SESSION['userID'])) {
         header('Location: '.$location);
     } else {
         $userController = new UserController();
@@ -238,7 +242,9 @@ include '../common/header.php';
                                                 }
                                                 ?>
                                             </table>
+                                            <p class="card-text">Payed by Paypal is Successful</p>
                                             <p class="card-text text-success">Total Payed: <?php echo $totalPurchased;?> EURO</p>
+                                            <p class="card-text">We will process your purchase as soon as possible.</p>
                                         </form>
                                     </div>
                                 </div>
