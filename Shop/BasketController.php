@@ -18,22 +18,42 @@ class BasketController
      * @return string
      */
     public function addToBasket($id_item, $quantity, $id_cookie){
-        try {
-            $sql = "insert into shop_basket (id_item, quantity, id_coockie) values (".$id_item.",".$quantity.",".$id_cookie.")";
-            $link = DBConfig::getLink();
 
-            if ($link->query($sql) === TRUE) {
-                return "New record created successfully";
-            } else {
-                echo "Error: " . $sql . "<br>" . $link->error;
-            }
-        }
-        catch (mysqli_sql_exception $e) {
+        try {
+            // Open a new connection to the MySQL server
+            $mysqli = DBConfig::getLink();
+
+            // Prepare an SQL statement for execution
+            $statement = $mysqli->prepare('INSERT INTO shop_basket (
+                id_item,
+                quantity,
+                id_coockie
+                ) VALUES (
+                    ?,
+                    ?,
+                    ?
+                );
+            ');
+
+            // Bind variables to a prepared statement as parameters
+            $statement->bind_param('iii', $id_item, $quantity, $id_cookie);
+
+            // Execute a prepared Query
+            $statement->execute();
+
+            // Close a prepared statement
+            $statement->close();
+
+            // Quick & "dirty" way to fetch newly created address id
+            $basketId = $mysqli->insert_id;
+
+            // Close database connection
+            $mysqli->close();
+            return $basketId;
+        } catch (mysqli_sql_exception $e) {
             // Output error and exit upon exception
-                echo $e->getMessage();
-                exit;
-        } finally {
-            $link->close();
+            echo $e->getMessage();
+            exit;
         }
 
     }
