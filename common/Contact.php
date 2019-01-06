@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once "../DBConfig.php";
+include_once ('../Shop/BasketController.php');
 include_once '../common/header.php';
 
 ?>

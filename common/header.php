@@ -3,13 +3,13 @@ $countBasket = 0;
 $UserName ="";
 
 // Show the count of basket items selected by user form basket
-//if(isset($_COOKIE['SessionId'])) {
-//    $session = $_COOKIE['SessionId'];
-//    $basketController = new BasketController();
-//    $result = $basketController->getCountOfItemsFromBasket($session);
-//    $row = $result->fetch_row();
-//    $countBasket = $row[0];
-//}
+if(isset($_COOKIE['SessionId'])) {
+   $session = $_COOKIE['SessionId'];
+    $basketController = new BasketController();
+   $result = $basketController->getCountOfItemsFromBasket($session);
+   $row = $result->fetch_row();
+   $countBasket = $row[0];
+}
 
 
 // Check if user clicks for logout, then destroy all user sessions
