@@ -4,11 +4,48 @@ $UserName ="";
 
 // Show the count of basket items selected by user form basket
 if(isset($_COOKIE['SessionId'])) {
-   $session = $_COOKIE['SessionId'];
-    $basketController = new BasketController();
-   $result = $basketController->getCountOfItemsFromBasket($session);
-   $row = $result->fetch_row();
-   $countBasket = $row[0];
+       /**
+     * @param $cookieValue
+     * @return bool|mysqli_result
+     */
+    function getCountOfItemsFromBasket($cookieValue) {
+        try {
+            // Open a new connection to the MySQL server
+            $mysqli = mysqli_connect("localhost:3306","pmauser","Mrt136594$","shop");
+
+            // Prepare an SQL statement for execution
+            $statement = $mysqli->prepare('SELECT count(*) FROM shop_basket 
+                    INNER JOIN shop_cookie ON shop_cookie.id = shop_basket.id_coockie 
+                    INNER JOIN shop_items ON shop_basket.id_item = shop_items.id 
+                    WHERE shop_cookie.cookie_value = ?');
+
+            // Binds variables to a prepared statement as parameters
+            $statement->bind_param('s', $cookieValue);
+
+            // Execute a prepared query
+            $statement->execute();
+
+            // Gets a result set from a prepared statement
+            $result = $statement->get_result();
+
+            // Close a prepared statement
+            $statement->close();
+
+            // Close database connection
+            $mysqli->close();
+
+            return $result;
+        } catch (mysqli_sql_exception $e) {
+            // Output error and exit upon exception
+            echo $e->getMessage();
+            exit;
+        }
+    }
+
+    $session = $_COOKIE['SessionId'];
+    $result = getCountOfItemsFromBasket($session);
+     $row = $result->fetch_row();
+     $countBasket = $row[0];
 }
 
 
