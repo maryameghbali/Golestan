@@ -146,26 +146,39 @@ class CookieController
 
         $expirationDate = time()+(3600*24*7);
         $loggedin = isset($_SESSION['userID']) ? 1 : 0;
-
         try {
+            $link =DBConfig::getLink();
+            // Prepare an SQL statement for execution
+            $statement = $link->prepare('INSERT INTO shop_cookie (
+                    cookie_value,
+                    id_user,
+                    loggedin,
+                    expiration_date
+                    
+                ) VALUES (
+                    ?,
+                    ?,
+                    ?,
+                    ?
+                   
+                );
+            ');
+            // Bind variables to a prepared statement as parameters
+            $statement->bind_param('siii', $CookieValue, $UId, $LoggedIn, $expirationDate);
 
-            $sql = "insert into shop_cookie (cookie_value, id_user, loggedin, expiration_date) values ('".$CookieValue."',".$UId.",".$LoggedIn.",".$expirationDate.")";
-            $link = DBConfig::getLink();
+            // Execute a prepared Query
+            $statement->execute();
 
-            if ($link->query($sql) === TRUE) {
-                return "New record created successfully";
-            } else {
-                echo "Error: " . $sql . "<br>" . $link->error;
-            }
-        }
-        catch (mysqli_sql_exception $e) {
+            // Close a prepared statement
+            $statement->close();
+
+            $link->close();
+
+        } catch (mysqli_sql_exception $e) {
             // Output error and exit upon exception
             echo $e->getMessage();
             exit;
-        } finally {
-            $link->close();
         }
-
 
     }
 
