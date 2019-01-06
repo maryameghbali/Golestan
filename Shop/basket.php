@@ -19,7 +19,7 @@ include("CookieController.php");
 
 $productController = new ProductController();
 $cookieController = new CookieController();
-//$basketController = new BasketController();
+$basketController = new BasketController();
 $countBasket = false;
 $itemCount = 0;
 $totalPrice = 0.0;
@@ -27,7 +27,7 @@ include '../common/header.php';
 if(isset($_POST)){
     if(isset($_POST['deleteItem'])){
         $deleteItem = $_POST['deleteItem'];
-        $msg= $basketController->deleteItemFromBasket($deleteItem);
+        $basketController->deleteItemFromBasket($deleteItem);
 
     }
     if(isset($_COOKIE['SessionId']))

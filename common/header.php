@@ -11,7 +11,7 @@ if(isset($_COOKIE['SessionId'])) {
     function getCountOfItemsFromBasket($cookieValue) {
         try {
             // Open a new connection to the MySQL server
-            $mysqli = mysqli_connect("localhost:3306","pmauser","Mrt136594$","shop");
+            $mysqli = mysqli_connect("localhost:3306","root","","shop");
 
             // Prepare an SQL statement for execution
             $statement = $mysqli->prepare('SELECT count(*) FROM shop_basket 
