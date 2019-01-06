@@ -69,21 +69,29 @@ include '../common/header.php';
                         {
                             while ($row=mysqli_fetch_array($result))
                             {
-                            $totalPrice += $row[13] * $row[2];
+                            $id_basket = $row[0];
+                            $quantity = $row[2];
+                            $price = $row[13];
+                            $id_item = $row[9];
+                            $id_user = $row[6];
+                            $itemTitle = $row[10];
+                            $total_price = $price * $quantity;
+
                             ?>
                                 <tr>
                                     <th scope="row" >
                                         <img style="height: 5rem;"
-                                             src="/Golestan/assets/images/ProductImages/shop_items<?php echo $row[9]; ?>.jpg" >
+                                             src="/Golestan/assets/images/ProductImages/shop_items<?php echo $id_item; ?>.jpg" >
                                     </th>
-                                    <td><?php echo htmlspecialchars($row[10], ENT_QUOTES, 'UTF-8');?></td>
-                                    <td>Euro <?php echo $row[4];?></td>
-                                    <td><?php echo $row[2];?></td>
+                                    <td><?php echo htmlspecialchars($itemTitle, ENT_QUOTES, 'UTF-8');?></td>
+                                    <td>Euro <?php echo $total_price;?></td>
+                                    <td><?php echo $quantity;?></td>
                                     <td><button type="submit" name="deleteItem" class="btn btn-danger"
-                                                value="<?php echo $row[0];?>">Delete</button></td>
+                                                value="<?php echo $id_basket;?>">Delete</button></td>
                                 </tr>
                         <?php
-                                $itemCount += $row[2];
+                                $totalPrice += $total_price;
+                                $itemCount += $quantity;
                             }
 
                         }?>
