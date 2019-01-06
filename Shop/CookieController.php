@@ -1,4 +1,6 @@
 <?php
+
+include ('./Shop/BasketController.php');
 class CookieController
 {
     public function __construct()
@@ -17,7 +19,7 @@ class CookieController
      * @param $cookie_value
      * @param $quantity
      */
-    public function addToCookie($cookie_value, $quantity){
+  /*  public function addToCookie($cookie_value, $quantity){
         if (!empty($_COOKIE['UserBasket'])) {
             $cookie = $_COOKIE['UserBasket'];
             $cardArray = json_decode($cookie, true);
@@ -30,6 +32,25 @@ class CookieController
         setcookie("UserBasket", $json, time()+(3600*24*7), "/",null, null, true);
         if(isset($_SESSION['userID'])){
             $this->updateCookieToDb($_SESSION['userID'], $json);
+        }
+    }*/
+    public function addToCookie($productId, $quantity)
+    {
+        $basketController = new BasketController();
+        if (!empty($_COOKIE['SessionId'])) {
+            $CookieValue = $_COOKIE['SessionId'];
+            $result = $this->getCookieByValue($CookieValue);
+            $CookieId = $result->id;
+            $basketController->addToBasket($productId,$quantity,$CookieId);
+
+        } else {
+            $CookieValue = bin2hex(random_bytes(32));
+            setcookie("SessionId", $CookieValue, time()+(3600*24*7), "/",null, null, true);
+            $userId = isset($_SESSION['userID']) ? $_SESSION['userID'] : -1;
+            $this->AddCookieToDB($CookieValue,$userId);
+            $result = $this->getCookieByValue($CookieValue);
+            $CookieId = $result->id;
+            $basketController->addToBasket($productId,$quantity,$CookieId);
         }
     }
 
@@ -72,42 +93,31 @@ class CookieController
      *
      * @param $UId
      */
-    function AddCookieToDB($UId){
+    function AddCookieToDB($CookieValue,$UId){
 
-        $cookie = $_COOKIE['UserBasket'];
-        $cardArray = json_decode($cookie, true);
-        $json = json_encode($cardArray);
+
         $expirationDate = time()+(3600*24*7);
         $loggedin = isset($_SESSION['userID']) ? 1 : 0;
 
-        $userController = new UserController();
-        $result = $userController->getUserById($UId);
-        if ($result!= null && $result!="")
-        {
-            $this->updateCookieToDb($UId, $json);
+        try {
 
-        }
-        else
-        {
-            try {
+            $sql = "insert into shop_cookie (cookie_value, id_user, loggedin, expiration_date) values ('".$CookieValue."',".$UId.",".$loggedin.",".$expirationDate.")";
+            $link = DBConfig::getLink();
 
-                $sql = "insert into shop_cookie (cookie_value, id_user, loggedin, expiration_date) values ('".$json."',".$UId.",".$loggedin.",".$expirationDate.")";
-                $link = DBConfig::getLink();
-
-                if ($link->query($sql) === TRUE) {
-                    return "New record created successfully";
-                } else {
-                    echo "Error: " . $sql . "<br>" . $link->error;
-                }
-            }
-            catch (mysqli_sql_exception $e) {
-                // Output error and exit upon exception
-                echo $e->getMessage();
-                exit;
-            } finally {
-                $link->close();
+            if ($link->query($sql) === TRUE) {
+                return "New record created successfully";
+            } else {
+                echo "Error: " . $sql . "<br>" . $link->error;
             }
         }
+        catch (mysqli_sql_exception $e) {
+            // Output error and exit upon exception
+            echo $e->getMessage();
+            exit;
+        } finally {
+            $link->close();
+        }
+
 
     }
 
@@ -181,7 +191,25 @@ class CookieController
         }
     }
 
-
+    function getCookieByValue($value) {
+        try {
+            $link = DBConfig::getLink();
+            $statement = $link->prepare('SELECT * FROM shop_cookie WHERE cookie_value = ?');
+            $statement->bind_param('s',$value);
+            $statement->execute();
+            $result = $statement->get_result();
+            $cookie = $result->fetch_object();
+            return $cookie;
+        }
+        catch(mysqli_sql_exception $e){
+            echo $e->getMessage(), PHP_EOL;
+            exit();
+        }
+        finally
+        {
+            $link->close();
+        }
+    }
     /*
     * get Cookie By UserId
     *
