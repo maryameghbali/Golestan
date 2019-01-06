@@ -1,6 +1,6 @@
 <?php
 
-include ('./Shop/BasketController.php');
+include_once ('../Shop/BasketController.php');
 class CookieController
 {
     public function __construct()
@@ -14,30 +14,15 @@ class CookieController
     /*
      * Add to Cookie
      *
-     * Add user selected items for order to cookie
-     *
+     * If no SessionId, then add SessionId to cookie and add user selected items to Basket table in database
+     * Else just add user selected items to Basket table in database
      * @param $cookie_value
      * @param $quantity
      */
-  /*  public function addToCookie($cookie_value, $quantity){
-        if (!empty($_COOKIE['UserBasket'])) {
-            $cookie = $_COOKIE['UserBasket'];
-            $cardArray = json_decode($cookie, true);
-            array_push($cardArray, [$cookie_value => $quantity]);
-            $json = json_encode($cardArray);
-        } else {
-            $cardArray = array( [$cookie_value => $quantity]);
-            $json = json_encode($cardArray);
-        }
-        setcookie("UserBasket", $json, time()+(3600*24*7), "/",null, null, true);
-        if(isset($_SESSION['userID'])){
-            $this->updateCookieToDb($_SESSION['userID'], $json);
-        }
-    }*/
     public function addToCookie($productId, $quantity)
     {
         $basketController = new BasketController();
-        if (!empty($_COOKIE['SessionId'])) {
+        if (isset($_COOKIE['SessionId'])) {
             $CookieValue = $_COOKIE['SessionId'];
             $result = $this->getCookieByValue($CookieValue);
             $CookieId = $result->id;
@@ -47,10 +32,73 @@ class CookieController
             $CookieValue = bin2hex(random_bytes(32));
             setcookie("SessionId", $CookieValue, time()+(3600*24*7), "/",null, null, true);
             $userId = isset($_SESSION['userID']) ? $_SESSION['userID'] : -1;
-            $this->AddCookieToDB($CookieValue,$userId);
+            $this->AddCookieToDB($CookieValue,$userId,0);
             $result = $this->getCookieByValue($CookieValue);
             $CookieId = $result->id;
             $basketController->addToBasket($productId,$quantity,$CookieId);
+        }
+    }
+
+    /*
+    * Update Cookie
+    *
+    * Update Cookie SessionId with new value after user logged in
+    * This method run after user logged in to system and add new cookie value with flag Loggedin equal one
+    *
+    * @param $UId
+    */
+    public function updateCookie($UId)
+    {
+        if (isset($_COOKIE['SessionId'])) {
+            $CookieValue = bin2hex(random_bytes(32));
+            $OldCookieValue = $_COOKIE['SessionId'];
+            $this->updateCookieToDbByValue($OldCookieValue,$CookieValue,$UId,1);
+            setcookie("SessionId", $CookieValue, time()+(3600*24*7), "/",null, null, true);
+        }
+        else
+        {
+            $CookieValue = bin2hex(random_bytes(32));
+            $this->AddCookieToDB($CookieValue,$UId,1);
+            setcookie("SessionId", $CookieValue, time()+(3600*24*7), "/",null, null, true);
+        }
+
+
+    }
+
+    /*
+   * Update Cookie To Db By Value
+   *
+   * Update Cookie with new value
+   *
+   * @param $OldCookieValue
+   * @param $CookieValue
+   * @param $userId
+   * @param $LoggedIn
+   */
+    public function updateCookieToDbByValue($OldCookieValue,$CookieValue,$userId,$LoggedIn) {
+        try {
+            // Open a new connection to the MySQL server
+            $mysqli = DBConfig::getLink();
+
+
+            // Prepare an SQL statement for execution
+            $statement = $mysqli->prepare('UPDATE shop_cookie SET cookie_value = ? , id_user = ? ,loggedin = ?    WHERE cookie_value = ?');
+
+            // Bind variables to a prepared statement as parameters
+            $statement->bind_param('siis', $CookieValue, $userId,$LoggedIn,$OldCookieValue);
+
+            // Execute a prepared Query
+            $statement->execute();
+
+            // Close a prepared statement
+            $statement->close();
+
+            // Close database connection
+            $mysqli->close();
+        } catch (mysqli_sql_exception $e) {
+            // Output error and exit upon exception
+            echo $e->getMessage();
+            exit;
         }
     }
 
@@ -93,7 +141,7 @@ class CookieController
      *
      * @param $UId
      */
-    function AddCookieToDB($CookieValue,$UId){
+    function AddCookieToDB($CookieValue,$UId,$LoggedIn){
 
 
         $expirationDate = time()+(3600*24*7);
@@ -101,7 +149,7 @@ class CookieController
 
         try {
 
-            $sql = "insert into shop_cookie (cookie_value, id_user, loggedin, expiration_date) values ('".$CookieValue."',".$UId.",".$loggedin.",".$expirationDate.")";
+            $sql = "insert into shop_cookie (cookie_value, id_user, loggedin, expiration_date) values ('".$CookieValue."',".$UId.",".$LoggedIn.",".$expirationDate.")";
             $link = DBConfig::getLink();
 
             if ($link->query($sql) === TRUE) {

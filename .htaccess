@@ -11,7 +11,7 @@ deny from all
 </files>
 
 # Allow access for all CSS, Js and Image files
-<FilesMatch ".*\.(css|js|png|jpg)$">
+<FilesMatch ".*\.(css|js|png|jpg|svg|eot|woff|ttf)$">
     Order Allow,Deny
     Allow from all
 </FilesMatch>
@@ -47,7 +47,7 @@ php_flag display_startup_errors Off
 php_flag display_errors Off
 php_flag html_errors On
 php_flag log_errors On
-php_value error_log app_error.log
+php_value error_log  ../app_error.log
 
 # Blocks some XSS attacks
 

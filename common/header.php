@@ -3,12 +3,12 @@ $countBasket = 0;
 $UserName ="";
 
 // Show the count of basket items selected by user form cookie
-if(isset($_POST) && isset($_COOKIE['UserBasket'])) {
+/*if(isset($_POST) && isset($_COOKIE['UserBasket'])) {
     $cookie = $_COOKIE['UserBasket'];
     $cardArray = json_decode($cookie, true);
     $countBasket =  count($cardArray);
 }
-
+*/
 // Check if user clicks for logout, then destroy all user sessions
 if (isset($_POST['logout']))
 {
@@ -114,7 +114,7 @@ if(isset($_SESSION['UserName'])) {
                     </div>
                     <nav class="navbar">
                         <ul class="navbar_menu">
-                            <li><a href="/Golestan/Index.php">home</a></li>
+                            <li><a href="/Golestan/Shop/Index.php">home</a></li>
                             <li><a href="/Golestan/Shop/ProductManage.php">Sell Products</a></li>
 
                             <li><a href="/Golestan/common/Contact.php">contact</a></li>

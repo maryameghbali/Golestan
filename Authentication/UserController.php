@@ -1,5 +1,5 @@
 <?php
-include ('../Shop/CookieController.php');
+include_once ('../Shop/CookieController.php');
 
 class UserController
 {
@@ -103,23 +103,10 @@ class UserController
 
                 if(password_verify($preparedPass, $password)){
                     $this->AssignSession($user->id,$user->name);
+
                     $cookieController = new CookieController();
-                    if (!empty($_COOKIE['UserBasket']))
-                    {
-                         $cookieController->AddCookieToDB($user->id);
-                    }
-                    else
-                    {
-                        $result = $cookieController->getCookieByUserId($user->id);
-                        if ($result!= null && $result!="")
-                        {
-                            if ($result->loggedin == 0)
-                                setcookie("UserBasket", $result->cookie_value,$result->expiration_date	, "/",null, null, true);
-                            $cookieController->updateLoggedInToDb($user->id,1);
-                        }
+                    $cookieController->updateCookie($user->id);
 
-
-                    }
                     return true;
                 }
                 else

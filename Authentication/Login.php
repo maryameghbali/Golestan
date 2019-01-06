@@ -52,11 +52,14 @@ if(isset($_POST) & !empty($_POST)) {
 
         if (isset($_POST['login']))
         {
+
             if (hash_equals($token, $_POST['token'])) {
+
                 $controller = new UserController();
                 $result = $controller->loginUser($_POST['inputEmail'],$_POST['inputPassword']);
                 $source = $_GET['from'];
                 if($result) {
+                    echo "4444";
                     if($source == "'checkout'") 
                     {
                         header('Location: '.$basketPage);
@@ -70,7 +73,7 @@ if(isset($_POST) & !empty($_POST)) {
                         header('Location: '.$viewOrders);
                     }
                     else {
-                        header('Location:/Golestan/Index.php');
+                        header('Location:/Golestan/Shop/Index.php');
                     }
                 } else {
                     $mes = "Email or Password is wrong.";
