@@ -21,11 +21,10 @@ if(isset($_POST)) {
     }
 }
 
+include  "../common/header.php";
 $ShowId=$_GET['Id'];
 $result = $productController->getProductById($ShowId);
 $row=mysqli_fetch_row($result);
-
-include  "../common/header.php";
 ?>
 
 <div class="container single_product_container">
