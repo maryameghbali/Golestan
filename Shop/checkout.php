@@ -89,7 +89,7 @@ include '../common/header.php';
                     <form method="post">
                     <div class="card-body">
                         <h5 class="card-title">Receiver address</h5>
-                        <p class="card-text"><?php print_r($address) ?></p>
+                        <p class="card-text"><?php htmlspecialchars(print_r($address), ENT_QUOTES, 'UTF-8');  ?></p>
                         <a href="#" class="card-link" data-toggle="modal" data-target="#exampleModal"
                            data-whatever="@mdo">Change the Address</a>
                     </div>
