@@ -1,6 +1,6 @@
 <?php
 $location = "/Golestan/Authentication/Login.php?from='checkout'";
-$index = "/Golestan/Index.php";
+$index = "/Golestan/Shop/Index.php";
 include "../DBConfig.php";
 include '../Authentication/UserController.php';
 include ('OrderController.php');
@@ -18,7 +18,11 @@ $totalPurchased = 0;
 
 if(isset($_POST)) {
 
-    if(!isset($_SESSION['userID']) && !isset($_SESSION['token'])) {
+    if(!(isset($_COOKIE['SessionId']))) {
+        header('Location: '.$index);
+    }
+
+    if(!isset($_SESSION['userID'])) {
         header('Location: '.$location);
     } else {
         $userController = new UserController();
@@ -44,9 +48,9 @@ if(isset($_POST)) {
     if(isset($_POST['btnAddress'])){
         $rangeValue = 0;
     }
-    if(isset($_POST['btnCheckout'])){
-        $orderStatus = $orderController->addNewOrder();
-        $cookieController->deleteCookies();
+    if(isset($_POST['btnCheckout']) && isset($_COOKIE['SessionId'])){
+        $value = $_COOKIE['SessionId'];
+        $orderStatus = $orderController->addNewOrder($value);
         $rangeValue = 2;
     }
 }
@@ -238,7 +242,9 @@ include '../common/header.php';
                                                 }
                                                 ?>
                                             </table>
+                                            <p class="card-text">Payed by Paypal is Successful</p>
                                             <p class="card-text text-success">Total Payed: <?php echo $totalPurchased;?> EURO</p>
+                                            <p class="card-text">We will process your purchase as soon as possible.</p>
                                         </form>
                                     </div>
                                 </div>

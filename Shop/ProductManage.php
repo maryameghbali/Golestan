@@ -15,7 +15,8 @@ if(isset($_POST)) {
         header('Location: '.$loginPage);
     }
 }
-$userId = $_SESSION['userID'];
+if (isset($_SESSION['userID']))
+    $userId = $_SESSION['userID'];
 
 include  "../common/header.php";
 include "../DBConfig.php";

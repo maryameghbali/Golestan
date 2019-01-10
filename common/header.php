@@ -2,12 +2,52 @@
 $countBasket = 0;
 $UserName ="";
 
-// Show the count of basket items selected by user form cookie
-if(isset($_POST) && isset($_COOKIE['UserBasket'])) {
-    $cookie = $_COOKIE['UserBasket'];
-    $cardArray = json_decode($cookie, true);
-    $countBasket =  count($cardArray);
+// Show the count of basket items selected by user form basket
+if(isset($_COOKIE['SessionId'])) {
+       /**
+     * @param $cookieValue
+     * @return bool|mysqli_result
+     */
+    function getCountOfItemsFromBasket($cookieValue) {
+        try {
+            // Open a new connection to the MySQL server
+            $mysqli = mysqli_connect("localhost:3306","root","","shop");
+
+            // Prepare an SQL statement for execution
+            $statement = $mysqli->prepare('SELECT count(*) FROM shop_basket 
+                    INNER JOIN shop_cookie ON shop_cookie.id = shop_basket.id_coockie 
+                    INNER JOIN shop_items ON shop_basket.id_item = shop_items.id 
+                    WHERE shop_cookie.cookie_value = ?');
+
+            // Binds variables to a prepared statement as parameters
+            $statement->bind_param('s', $cookieValue);
+
+            // Execute a prepared query
+            $statement->execute();
+
+            // Gets a result set from a prepared statement
+            $result = $statement->get_result();
+
+            // Close a prepared statement
+            $statement->close();
+
+            // Close database connection
+            $mysqli->close();
+
+            return $result;
+        } catch (mysqli_sql_exception $e) {
+            // Output error and exit upon exception
+            echo $e->getMessage();
+            exit;
+        }
+    }
+
+    $session = $_COOKIE['SessionId'];
+    $result = getCountOfItemsFromBasket($session);
+     $row = $result->fetch_row();
+     $countBasket = $row[0];
 }
+
 
 // Check if user clicks for logout, then destroy all user sessions
 if (isset($_POST['logout']))
@@ -21,7 +61,7 @@ if (isset($_POST['logout']))
 
 }
 
-// Show the name of user when user loged in to the system
+// Show the name of user when user logged in to the system
 if(isset($_SESSION['UserName'])) {
 
     $UserName = 'Welcome  '. $_SESSION['UserName'];
@@ -114,7 +154,7 @@ if(isset($_SESSION['UserName'])) {
                     </div>
                     <nav class="navbar">
                         <ul class="navbar_menu">
-                            <li><a href="/Golestan/Index.php">home</a></li>
+                            <li><a href="/Golestan/Shop/Index.php">home</a></li>
                             <li><a href="/Golestan/Shop/ProductManage.php">Sell Products</a></li>
 
                             <li><a href="/Golestan/common/Contact.php">contact</a></li>
