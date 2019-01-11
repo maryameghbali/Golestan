@@ -15,6 +15,7 @@ $userController = new UserController();
 // Check for validation of user sessions
 SessionManage();
 
+$Key = bin2hex(random_bytes(32));
 if (isset($_COOKIE['SessionId'])) {
     $result = $cookieController->getCookieByValue($_COOKIE['SessionId']);
     $id_user = $result->id_user;
@@ -22,7 +23,9 @@ if (isset($_COOKIE['SessionId'])) {
     {
         $resultUser = $userController->getUserById($id_user);
         $_SESSION['userID']= $resultUser->id;
-        $_SESSION['UserName']= $resultUser->name;;
+        $_SESSION['UserName']= $resultUser->name;
+        $token = hash_hmac('sha256',"mySecretPath: index.php",$Key);
+        $_SESSION['token'] = $token;
     }
 
 }

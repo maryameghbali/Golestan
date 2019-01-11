@@ -2,7 +2,7 @@
 $loginPage = "/Golestan/Authentication/Login.php?from='addProduct'";
 session_start();
 
-include ('../common/General.php');
+include_once ('../common/General.php');
 
 // Check for validation of user sessions
 SessionManage();
@@ -18,9 +18,9 @@ if(isset($_POST)) {
 if (isset($_SESSION['userID']))
     $userId = $_SESSION['userID'];
 
-include  "../common/header.php";
-include "../DBConfig.php";
-include "ProductController.php";
+include_once "../DBConfig.php";
+include_once  "../common/header.php";
+include_once "ProductController.php";
 
 $controller = new ProductController();
 
